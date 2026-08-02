@@ -394,7 +394,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v7');
+                const saved = localStorage.getItem('retreatAppData_v9');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -403,17 +403,6 @@
         }
 
         let appData = loadLocalData();
-
-        function saveData() {
-            try {
-                localStorage.setItem('retreatAppData_v7', JSON.stringify(appData));
-            } catch (e) {
-                console.warn("Local storage saving error:", e);
-            }
-            if (window.firebaseSetData) {
-                window.firebaseSetData(appData);
-            }
-        }
 
         let currentView = 'home';
         let currentBusTab = '1호차';
@@ -979,31 +968,22 @@
             const now = new Date();
             const timeStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
 
-            if (!appData.posts) appData.posts = [];
-
-            appData.posts.unshift({
-                id: Date.now(),
-                author: authorInput || '익명',
-                content: contentInput,
-                date: timeStr,
-                pass: passInput,
-                prays: 0,
-                blessings: 0
-            });
-
-            saveData();
-            renderBoard();
-            if (window.lucide) lucide.createIcons();
+            if (window.fetchLatestAndSavePost) {
+                window.fetchLatestAndSavePost({
+                    id: Date.now(),
+                    author: authorInput || '익명',
+                    content: contentInput,
+                    date: timeStr,
+                    pass: passInput,
+                    prays: 0,
+                    blessings: 0
+                });
+            }
         }
 
         function toggleReaction(postId, type) {
-            const post = appData.posts.find(p => p.id === postId);
-            if (post) {
-                if (!post[type]) post[type] = 0;
-                post[type] += 1;
-                saveData();
-                renderBoard();
-                if (window.lucide) lucide.createIcons();
+            if (window.fetchLatestAndToggleReaction) {
+                window.fetchLatestAndToggleReaction(postId, type);
             }
         }
 
@@ -1011,19 +991,8 @@
             const inputPass = prompt("삭제를 위한 비밀번호를 입력해 주세요.");
             if (inputPass === null) return;
 
-            const postIndex = appData.posts.findIndex(p => p.id === postId);
-            if (postIndex === -1) return;
-
-            const post = appData.posts[postIndex];
-
-            if (inputPass === post.pass || inputPass === '1234') {
-                appData.posts.splice(postIndex, 1);
-                saveData();
-                renderBoard();
-                if (window.lucide) lucide.createIcons();
-                alert('게시글이 삭제되었습니다.');
-            } else {
-                alert('비밀번호가 일치하지 않습니다.');
+            if (window.fetchLatestAndDeletePost) {
+                window.fetchLatestAndDeletePost(postId, inputPass);
             }
         }
 
@@ -1214,7 +1183,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCymavtQxSuMSCvBD_MNTbyLqEx_gIF2Ko",
@@ -1231,7 +1200,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'main_v8');
+        const docRef = doc(db, 'retreatData', 'main_v9');
 
         const initAuth = async () => {
             try {
@@ -1243,11 +1212,76 @@
 
         await initAuth();
 
-        window.firebaseSetData = async function(data) {
+        window.saveData = async function() {
             try {
-                await setDoc(docRef, { payload: JSON.stringify(data) }, { merge: true });
+                localStorage.setItem('retreatAppData_v9', JSON.stringify(appData));
+                await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
+            }
+        };
+
+        // 안전하게 최신 DB 데이터를 먼저 불러온 뒤 게시글을 추가하는 함수
+        window.fetchLatestAndSavePost = async function(newPost) {
+            try {
+                const snap = await getDoc(docRef);
+                if (snap.exists() && snap.data().payload) {
+                    const latestData = JSON.parse(snap.data().payload);
+                    if (!latestData.posts) latestData.posts = [];
+                    latestData.posts.unshift(newPost);
+                    appData = latestData;
+                } else {
+                    if (!appData.posts) appData.posts = [];
+                    appData.posts.unshift(newPost);
+                }
+                await window.saveData();
+                renderBoard();
+                if (window.lucide) lucide.createIcons();
+            } catch (e) {
+                console.error("Post save error:", e);
+            }
+        };
+
+        window.fetchLatestAndToggleReaction = async function(postId, type) {
+            try {
+                const snap = await getDoc(docRef);
+                if (snap.exists() && snap.data().payload) {
+                    appData = JSON.parse(snap.data().payload);
+                }
+                const post = appData.posts.find(p => p.id === postId);
+                if (post) {
+                    if (!post[type]) post[type] = 0;
+                    post[type] += 1;
+                }
+                await window.saveData();
+                renderBoard();
+                if (window.lucide) lucide.createIcons();
+            } catch (e) {
+                console.error("Reaction error:", e);
+            }
+        };
+
+        window.fetchLatestAndDeletePost = async function(postId, inputPass) {
+            try {
+                const snap = await getDoc(docRef);
+                if (snap.exists() && snap.data().payload) {
+                    appData = JSON.parse(snap.data().payload);
+                }
+                const postIndex = appData.posts.findIndex(p => p.id === postId);
+                if (postIndex === -1) return;
+                const post = appData.posts[postIndex];
+
+                if (inputPass === post.pass || inputPass === '1234') {
+                    appData.posts.splice(postIndex, 1);
+                    await window.saveData();
+                    renderBoard();
+                    if (window.lucide) lucide.createIcons();
+                    alert('게시글이 삭제되었습니다.');
+                } else {
+                    alert('비밀번호가 일치하지 않습니다.');
+                }
+            } catch (e) {
+                console.error("Delete error:", e);
             }
         };
 
@@ -1258,14 +1292,12 @@
                     try {
                         const remoteData = JSON.parse(data.payload);
                         
-                        // 현재 작성 중인 게시글 내용이 날아가지 않도록 입력 상자 값 보존
                         const activeAuthor = document.getElementById('post-author-input')?.value || '';
                         const activePass = document.getElementById('post-pass-input')?.value || '';
                         const activeContent = document.getElementById('post-content-input')?.value || '';
 
                         appData = remoteData;
                         
-                        // 현재 보고 있는 화면을 유지하되 스크롤 위치와 작성 내용 보존
                         navigateTo(currentView, true);
 
                         if (currentView === 'board') {
@@ -1278,7 +1310,7 @@
                     }
                 }
             } else {
-                window.firebaseSetData(defaultAppData);
+                window.saveData();
             }
         });
     </script>
