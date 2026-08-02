@@ -166,7 +166,7 @@
                     <div class="grid grid-cols-3 gap-2">
                         <div>
                             <label class="block text-slate-500 mb-1">조</label>
-                            <input type="text" id="m-form-group" placeholder="1-1" class="w-full border rounded-lg px-2.5 py-1.5">
+                            <input type="text" id="m-form-group" placeholder="1-1" class="w-full border rounded-lg px-2 py-1.5">
                         </div>
                         <div>
                             <label class="block text-slate-500 mb-1">버스</label>
@@ -179,7 +179,7 @@
                         </div>
                         <div>
                             <label class="block text-slate-500 mb-1">숙소</label>
-                            <input type="text" id="m-form-room" placeholder="201호" class="w-full border rounded-lg px-2.5 py-1.5">
+                            <input type="text" id="m-form-room" placeholder="201호" class="w-full border rounded-lg px-2 py-1.5">
                         </div>
                     </div>
                 </div>
@@ -394,7 +394,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v5');
+                const saved = localStorage.getItem('retreatAppData_v6');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -406,7 +406,7 @@
 
         function saveData() {
             try {
-                localStorage.setItem('retreatAppData_v5', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v6', JSON.stringify(appData));
             } catch (e) {
                 console.warn("Local storage saving error:", e);
             }
@@ -1231,7 +1231,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'main_v5');
+        const docRef = doc(db, 'retreatData', 'main_v6');
 
         const initAuth = async () => {
             try {
@@ -1258,6 +1258,7 @@
                     try {
                         const remoteData = JSON.parse(data.payload);
                         appData = remoteData;
+                        // 현재 열려있는 화면이 게시판, 버스, 명단 등 어디든 실시간으로 화면 갱신
                         navigateTo(currentView, true);
                     } catch (err) {
                         console.error("Firebase Sync Parse Error:", err);
