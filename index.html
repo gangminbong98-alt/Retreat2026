@@ -287,7 +287,7 @@
                 { id: 21, name: "부예원", role: "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 22, name: "장하린", role: "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 23, name: "장하슬", role: "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
-                { id: 24, name: "김조이", role: "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
+                { id: 24, name: "김조이", "role": "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 25, name: "박지민", role: "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 26, name: "김예나", role: "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 27, name: "나지민", role: "학생", grade: "1-5", group: "1-5", bus: "1호차", room: "201호", checked: false, busChecked: false },
@@ -312,7 +312,7 @@
                 { id: 46, name: "김태경", role: "학생", grade: "2-3", group: "2-3", bus: "2호차", room: "203호", checked: false, busChecked: false },
                 { id: 47, name: "김주아", role: "학생", grade: "2-3", group: "2-3", bus: "2호차", room: "203호", checked: false, busChecked: false },
                 { id: 48, name: "오연서", role: "학생", grade: "2-4", group: "2-4", bus: "2호차", room: "202호", checked: false, busChecked: false },
-                { id: 49, "name": "신하은", role: "학생", grade: "2-4", group: "2-4", bus: "2호차", room: "202호", checked: false, busChecked: false },
+                { id: 49, name: "신하은", role: "학생", grade: "2-4", group: "2-4", bus: "2호차", room: "202호", checked: false, busChecked: false },
                 { id: 50, name: "정지민", role: "학생", grade: "2-4", group: "2-4", bus: "2호차", room: "202호", checked: false, busChecked: false },
                 { id: 51, name: "나윤주", role: "학생", grade: "2-4", group: "2-4", bus: "2호차", room: "202호", checked: false, busChecked: false },
                 { id: 52, name: "황제하", role: "학생", grade: "3-1", group: "3-1", bus: "2호차", room: "204호", checked: false, busChecked: false },
@@ -328,7 +328,7 @@
                 { id: 62, name: "박준서", role: "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
                 { id: 63, name: "박하민", role: "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
                 { id: 64, name: "김민성", role: "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
-                { id: 65, name: "윤상호", role: "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
+                { id: 65, name: "윤상호", "role": "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
                 { id: 66, name: "정시원", role: "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
                 { id: 67, name: "강선후", role: "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
                 { id: 68, name: "김율기", role: "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
@@ -367,7 +367,7 @@
                         { time: "13:00 - 14:00", title: "공과 2과", location: "소강당", note: "" },
                         { time: "14:00 - 17:00", title: "명랑운동회", location: "야외 운동장", note: "여벌 옷, 수건 필수" },
                         { time: "17:00 - 18:00", title: "자유시간", location: "수련원 일대", note: "" },
-                        { time: "18:00 - 19:00", title: "저녁식사", location: "식당", note: "", menu: "카레라이스, 가쓰오유부장국, 해물완자전, 양배추콘샐러드, 배추김치" },
+                        { time: "18:00 - 19:00", title: "저녁식사", location: "식당", note": "", menu: "카레라이스, 가쓰오유부장국, 해물완자전, 양배추콘샐러드, 배추김치" },
                         { time: "19:00 - 22:00", title: "저녁집회", location: "대강당", note: "", speaker: { name: "허진열 목사", title: "브니엘교회 교육디렉터 / 청소년학교 기도불씨운동 사역자" } },
                         { time: "22:00 - 23:00", title: "목장별 나눔", location: "각 숙소", note: "" },
                         { time: "23:00 - 24:00", title: "취침 준비 및 소등", location: "각 숙소", note: "" }
@@ -394,7 +394,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v2');
+                const saved = localStorage.getItem('retreatAppData_v3');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -406,7 +406,7 @@
 
         function saveData() {
             try {
-                localStorage.setItem('retreatAppData_v2', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v3', JSON.stringify(appData));
             } catch (e) {
                 console.warn("Local storage saving error:", e);
             }
@@ -1240,8 +1240,8 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Firestore 저장 위치 문서 설정
-        const docRef = doc(db, 'retreatData', 'main');
+        // Firestore 저장 위치 문서 설정 (새로운 키 main_v3 사용으로 과거 데이터 원천 차단)
+        const docRef = doc(db, 'retreatData', 'main_v3');
 
         const initAuth = async () => {
             try {
