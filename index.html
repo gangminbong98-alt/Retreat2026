@@ -394,7 +394,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v9');
+                const saved = localStorage.getItem('retreatAppData_v10');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -664,7 +664,7 @@
             const m = appData.members.find(x => x.id === id);
             if (m) {
                 m.checked = !m.checked;
-                saveData();
+                window.saveDataAndSync();
                 navigateTo('members', true);
             }
         }
@@ -672,7 +672,7 @@
         function resetAllMemberChecks() {
             if (confirm("전체 참석자의 명단 체크 상태를 초기화하시겠습니까?")) {
                 appData.members.forEach(m => m.checked = false);
-                saveData();
+                window.saveDataAndSync();
                 navigateTo('members', true);
             }
         }
@@ -780,7 +780,7 @@
             if (member) {
                 member.busChecked = !member.busChecked;
                 lastSelectedName = member.name + (member.busChecked ? ' (승차 완료)' : ' (승차 취소)');
-                saveData();
+                window.saveDataAndSync();
                 navigateTo('bus', true);
             }
         }
@@ -794,13 +794,13 @@
                     }
                 });
                 lastSelectedName = '탑승 체크 초기화됨';
-                saveData();
+                window.saveDataAndSync();
                 navigateTo('bus', true);
             }
         }
 
         function saveAndToast() {
-            saveData();
+            window.saveDataAndSync();
             alert('탑승 데이터가 성공적으로 저장되었습니다.');
         }
 
@@ -1073,7 +1073,7 @@
         function resetAllChecksGlobal() {
             if (confirm("모든 참석자의 버스 탑승 체크를 초기화하시겠습니까?")) {
                 appData.members.forEach(m => m.busChecked = false);
-                saveData();
+                window.saveDataAndSync();
                 switchAdminTab('members');
                 alert("초기화되었습니다.");
             }
@@ -1143,7 +1143,7 @@
                     busChecked: false
                 });
             }
-            saveData();
+            window.saveDataAndSync();
             closeMemberForm();
             switchAdminTab('members');
         }
@@ -1151,7 +1151,7 @@
         function deleteMember(id) {
             if (confirm("정말 이 학생/교사 항목을 삭제하시겠습니까?")) {
                 appData.members = appData.members.filter(m => m.id !== id);
-                saveData();
+                window.saveDataAndSync();
                 switchAdminTab('members');
             }
         }
@@ -1159,14 +1159,14 @@
         function updateBusInfo(idx, field, val) {
             if (appData.buses[idx]) {
                 appData.buses[idx][field] = val;
-                saveData();
+                window.saveDataAndSync();
             }
         }
 
         function saveJsonData() {
             try {
                 appData = JSON.parse(document.getElementById('json-editor').value);
-                saveData();
+                window.saveDataAndSync();
                 alert('데이터가 성공적으로 업데이트되었습니다.');
                 closeAdminPanel();
             } catch(e) {
@@ -1200,7 +1200,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'main_v9');
+        const docRef = doc(db, 'retreatData', 'main_v11');
 
         const initAuth = async () => {
             try {
@@ -1212,30 +1212,42 @@
 
         await initAuth();
 
-        window.saveData = async function() {
+        // 전체 데이터 저장 및 동기화 (원자적 병합 적용)
+        window.saveDataAndSync = async function() {
             try {
-                localStorage.setItem('retreatAppData_v9', JSON.stringify(appData));
+                const snap = await getDoc(docRef);
+                if (snap.exists() && snap.data().payload) {
+                    const serverData = JSON.parse(snap.data().payload);
+                    // 서버의 게시글 목록을 최우선으로 보존하면서 현재 로컬의 체크 상태 등만 병합
+                    appData.posts = serverData.posts || appData.posts;
+                }
+                localStorage.setItem('retreatAppData_v11', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
             }
         };
 
-        // 안전하게 최신 DB 데이터를 먼저 불러온 뒤 게시글을 추가하는 함수
+        // 게시글 추가 전용 안전 함수 (절대로 상대방 글이 지워지지 않음)
         window.fetchLatestAndSavePost = async function(newPost) {
             try {
                 const snap = await getDoc(docRef);
+                let latestPosts = [];
                 if (snap.exists() && snap.data().payload) {
                     const latestData = JSON.parse(snap.data().payload);
-                    if (!latestData.posts) latestData.posts = [];
-                    latestData.posts.unshift(newPost);
-                    appData = latestData;
-                } else {
-                    if (!appData.posts) appData.posts = [];
-                    appData.posts.unshift(newPost);
+                    latestPosts = latestData.posts || [];
+                } else if (appData.posts) {
+                    latestPosts = appData.posts;
                 }
-                await window.saveData();
-                renderBoard();
+                
+                // 새 글을 맨 앞에 추가
+                latestPosts.unshift(newPost);
+                appData.posts = latestPosts;
+
+                localStorage.setItem('retreatAppData_v11', JSON.stringify(appData));
+                await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
+                
+                if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
             } catch (e) {
                 console.error("Post save error:", e);
@@ -1253,8 +1265,9 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                await window.saveData();
-                renderBoard();
+                localStorage.setItem('retreatAppData_v11', JSON.stringify(appData));
+                await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
+                if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
             } catch (e) {
                 console.error("Reaction error:", e);
@@ -1273,8 +1286,9 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    await window.saveData();
-                    renderBoard();
+                    localStorage.setItem('retreatAppData_v11', JSON.stringify(appData));
+                    await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
+                    if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
                     alert('게시글이 삭제되었습니다.');
                 } else {
@@ -1292,25 +1306,35 @@
                     try {
                         const remoteData = JSON.parse(data.payload);
                         
+                        // 현재 사용자가 게시판에서 글을 입력 중인지 확인
                         const activeAuthor = document.getElementById('post-author-input')?.value || '';
                         const activePass = document.getElementById('post-pass-input')?.value || '';
                         const activeContent = document.getElementById('post-content-input')?.value || '';
+                        const isTyping = document.activeElement && (
+                            document.activeElement.id === 'post-author-input' || 
+                            document.activeElement.id === 'post-pass-input' || 
+                            document.activeElement.id === 'post-content-input'
+                        );
 
                         appData = remoteData;
                         
-                        navigateTo(currentView, true);
-
+                        // 현재 화면이 게시판이고 타이핑 중이 아닐 때는 부드럽게 목록만 갱신
                         if (currentView === 'board') {
-                            if (document.getElementById('post-author-input')) document.getElementById('post-author-input').value = activeAuthor;
-                            if (document.getElementById('post-pass-input')) document.getElementById('post-pass-input').value = activePass;
-                            if (document.getElementById('post-content-input')) document.getElementById('post-content-input').value = activeContent;
+                            renderBoard();
+                            if (isTyping) {
+                                if (document.getElementById('post-author-input')) document.getElementById('post-author-input').value = activeAuthor;
+                                if (document.getElementById('post-pass-input')) document.getElementById('post-pass-input').value = activePass;
+                                if (document.getElementById('post-content-input')) document.getElementById('post-content-input').value = activeContent;
+                            }
+                        } else {
+                            navigateTo(currentView, true);
                         }
                     } catch (err) {
                         console.error("Firebase Sync Parse Error:", err);
                     }
                 }
             } else {
-                window.saveData();
+                window.saveDataAndSync();
             }
         });
     </script>
