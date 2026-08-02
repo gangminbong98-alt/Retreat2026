@@ -292,7 +292,7 @@
                 { id: 26, name: "김예나", role: "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 27, name: "나지민", role: "학생", grade: "1-5", group: "1-5", bus: "1호차", room: "201호", checked: false, busChecked: false },
                 { id: 28, name: "김현서", role: "학생", grade: "1-5", group: "1-5", bus: "1호차", room: "201호", checked: false, busChecked: false },
-                { id: 29, name: "신다온", role: "학생", grade: "1-5", group: "1-5", bus: "1호차", room: "201호", checked: false, busChecked: false },
+                { id: 29, "name": "신다온", role: "학생", grade: "1-5", group: "1-5", bus: "1호차", room: "201호", checked: false, busChecked: false },
                 { id: 30, name: "김아라", role: "학생", grade: "1-6", group: "1-6", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 31, name: "이혜린", role: "학생", grade: "1-6", group: "1-6", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 32, name: "조이헌", role: "학생", grade: "1-6", group: "1-6", bus: "1호차", room: "202호", checked: false, busChecked: false },
@@ -302,7 +302,7 @@
                 { id: 36, name: "이아윤", role: "학생", grade: "1-6", group: "1-6", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 37, name: "최온유", role: "학생", grade: "2-1", group: "2-1", bus: "1호차", room: "203호", checked: false, busChecked: false },
                 { id: 38, name: "정주원", role: "학생", grade: "2-1", group: "2-1", bus: "2호차", room: "203호", checked: false, busChecked: false },
-                { id: 39, "name": "허은우", role: "학생", grade: "2-1", group: "2-1", bus: "2호차", room: "203호", checked: false, busChecked: false },
+                { id: 39, name: "허은우", role: "학생", grade: "2-1", group: "2-1", bus: "2호차", room: "203호", checked: false, busChecked: false },
                 { id: 40, name: "방준서", role: "학생", grade: "2-1", group: "2-1", bus: "2호차", room: "203호", checked: false, busChecked: false },
                 { id: 41, name: "이승환", role: "학생", grade: "2-1", group: "2-1", bus: "2호차", room: "203호", checked: false, busChecked: false },
                 { id: 42, name: "이예준", role: "학생", grade: "2-1", group: "2-1", bus: "2호차", room: "203호", checked: false, busChecked: false },
@@ -321,7 +321,7 @@
                 { id: 55, name: "김준태", role: "학생", grade: "3-1", group: "3-1", bus: "2호차", room: "204호", checked: false, busChecked: false },
                 { id: 56, name: "윤환희", role: "학생", grade: "3-2", group: "3-2", bus: "2호차", room: "204호", checked: false, busChecked: false },
                 { id: 57, name: "이하민", role: "학생", grade: "3-4", group: "3-4", bus: "2호차", room: "204호", checked: false, busChecked: false },
-                { id: 58, name: "최다애", role: "학생", grade: "3-6", group: "3-6", bus: "2호차", room: "202호", checked: false, busChecked: false },
+                { id: 58, "name": "최다애", role: "학생", grade: "3-6", group: "3-6", bus: "2호차", room: "202호", checked: false, busChecked: false },
                 { id: 59, name: "김태린", role: "학생", grade: "3-6", group: "3-6", bus: "2호차", room: "202호", checked: false, busChecked: false },
                 { id: 60, name: "염유리아", role: "학생", grade: "3-6", group: "3-6", bus: "2호차", room: "202호", checked: false, busChecked: false },
                 { id: 61, name: "이사랑", role: "학생", grade: "3-6", group: "3-6", bus: "2호차", room: "202호", checked: false, busChecked: false },
@@ -367,7 +367,7 @@
                         { time: "13:00 - 14:00", title: "공과 2과", location: "소강당", note: "" },
                         { time: "14:00 - 17:00", title: "명랑운동회", location: "야외 운동장", note: "여벌 옷, 수건 필수" },
                         { time: "17:00 - 18:00", title: "자유시간", location: "수련원 일대", note: "" },
-                        { time: "18:00 - 19:00", title: "저녁식사", location: "식당", note: "", menu: "카레라이스, 가쓰오유부장국, 해물완자전, 양배추콘샐러드, 배추김치" },
+                        { time: "18:00 - 19:00", title: "저녁식사", location: "식당", note": "", menu: "카레라이스, 가쓰오유부장국, 해물완자전, 양배추콘샐러드, 배추김치" },
                         { time: "19:00 - 22:00", title: "저녁집회", location: "대강당", note: "", speaker: { name: "허진열 목사", title: "브니엘교회 교육디렉터 / 청소년학교 기도불씨운동 사역자" } },
                         { time: "22:00 - 23:00", title: "목장별 나눔", location: "각 숙소", note: "" },
                         { time: "23:00 - 24:00", title: "취침 준비 및 소등", location: "각 숙소", note: "" }
@@ -394,7 +394,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v4');
+                const saved = localStorage.getItem('retreatAppData_v5');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -406,7 +406,7 @@
 
         function saveData() {
             try {
-                localStorage.setItem('retreatAppData_v4', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v5', JSON.stringify(appData));
             } catch (e) {
                 console.warn("Local storage saving error:", e);
             }
@@ -1207,6 +1207,65 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             navigateTo('home');
+        });
+    </script>
+
+    <!-- Firebase Realtime Synchronization Module -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCymavtQxSuMSCvBD_MNTbyLqEx_gIF2Ko",
+            authDomain: "jiguchonyouth.firebaseapp.com",
+            databaseURL: "https://jiguchonyouth-default-rtdb.firebaseio.com",
+            projectId: "jiguchonyouth",
+            storageBucket: "jiguchonyouth.firebasestorage.app",
+            messagingSenderId: "56578766326",
+            appId: "1:56578766326:web:c9af6c5f41f3bc03a443d7",
+            measurementId: "G-WQCG7K64GZ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const docRef = doc(db, 'retreatData', 'main_v5');
+
+        const initAuth = async () => {
+            try {
+                await signInAnonymously(auth);
+            } catch (err) {
+                console.error("Firebase Auth Error:", err);
+            }
+        };
+
+        await initAuth();
+
+        window.firebaseSetData = async function(data) {
+            try {
+                await setDoc(docRef, { payload: JSON.stringify(data) }, { merge: true });
+            } catch (e) {
+                console.error("Firebase Sync Save Error:", e);
+            }
+        };
+
+        onSnapshot(docRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.data();
+                if (data && data.payload) {
+                    try {
+                        const remoteData = JSON.parse(data.payload);
+                        appData = remoteData;
+                        navigateTo(currentView, true);
+                    } catch (err) {
+                        console.error("Firebase Sync Parse Error:", err);
+                    }
+                }
+            } else {
+                window.firebaseSetData(defaultAppData);
+            }
         });
     </script>
 </body>
