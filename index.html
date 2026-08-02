@@ -287,7 +287,7 @@
                 { id: 21, name: "부예원", role: "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 22, name: "장하린", role: "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 23, name: "장하슬", role: "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
-                { id: 24, name: "김조이", "role": "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
+                { id: 24, name: "김조이", role: "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 25, name: "박지민", role: "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 26, name: "김예나", role: "학생", grade: "1-4", group: "1-4", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 27, name: "나지민", role: "학생", grade: "1-5", group: "1-5", bus: "1호차", room: "201호", checked: false, busChecked: false },
@@ -302,7 +302,7 @@
                 { id: 36, name: "이아윤", role: "학생", grade: "1-6", group: "1-6", bus: "1호차", room: "202호", checked: false, busChecked: false },
                 { id: 37, name: "최온유", role: "학생", grade: "2-1", group: "2-1", bus: "1호차", room: "203호", checked: false, busChecked: false },
                 { id: 38, name: "정주원", role: "학생", grade: "2-1", group: "2-1", bus: "2호차", room: "203호", checked: false, busChecked: false },
-                { id: 39, name: "허은우", role: "학생", grade: "2-1", group: "2-1", bus: "2호차", room: "203호", checked: false, busChecked: false },
+                { id: 39, "name": "허은우", role: "학생", grade: "2-1", group: "2-1", bus: "2호차", room: "203호", checked: false, busChecked: false },
                 { id: 40, name: "방준서", role: "학생", grade: "2-1", group: "2-1", bus: "2호차", room: "203호", checked: false, busChecked: false },
                 { id: 41, name: "이승환", role: "학생", grade: "2-1", group: "2-1", bus: "2호차", room: "203호", checked: false, busChecked: false },
                 { id: 42, name: "이예준", role: "학생", grade: "2-1", group: "2-1", bus: "2호차", room: "203호", checked: false, busChecked: false },
@@ -328,7 +328,7 @@
                 { id: 62, name: "박준서", role: "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
                 { id: 63, name: "박하민", role: "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
                 { id: 64, name: "김민성", role: "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
-                { id: 65, name: "윤상호", "role": "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
+                { id: 65, name: "윤상호", role: "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
                 { id: 66, name: "정시원", role: "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
                 { id: 67, name: "강선후", role: "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
                 { id: 68, name: "김율기", role: "학생", grade: "3-8", group: "3-8", bus: "2호차", room: "204호", checked: false, busChecked: false },
@@ -367,7 +367,7 @@
                         { time: "13:00 - 14:00", title: "공과 2과", location: "소강당", note: "" },
                         { time: "14:00 - 17:00", title: "명랑운동회", location: "야외 운동장", note: "여벌 옷, 수건 필수" },
                         { time: "17:00 - 18:00", title: "자유시간", location: "수련원 일대", note: "" },
-                        { time: "18:00 - 19:00", title: "저녁식사", location: "식당", note": "", menu: "카레라이스, 가쓰오유부장국, 해물완자전, 양배추콘샐러드, 배추김치" },
+                        { time: "18:00 - 19:00", title: "저녁식사", location: "식당", note: "", menu: "카레라이스, 가쓰오유부장국, 해물완자전, 양배추콘샐러드, 배추김치" },
                         { time: "19:00 - 22:00", title: "저녁집회", location: "대강당", note: "", speaker: { name: "허진열 목사", title: "브니엘교회 교육디렉터 / 청소년학교 기도불씨운동 사역자" } },
                         { time: "22:00 - 23:00", title: "목장별 나눔", location: "각 숙소", note: "" },
                         { time: "23:00 - 24:00", title: "취침 준비 및 소등", location: "각 숙소", note: "" }
@@ -394,7 +394,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v3');
+                const saved = localStorage.getItem('retreatAppData_v4');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -406,7 +406,7 @@
 
         function saveData() {
             try {
-                localStorage.setItem('retreatAppData_v3', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v4', JSON.stringify(appData));
             } catch (e) {
                 console.warn("Local storage saving error:", e);
             }
@@ -424,7 +424,7 @@
         let editingMemberId = null;
         let currentAdminTab = 'members';
 
-        function navigateTo(view, preserveScroll = false) {
+        function navigateTo(view, preserveScroll) {
             const main = document.getElementById('main-content');
             const savedScroll = main ? main.scrollTop : 0;
 
@@ -444,21 +444,21 @@
             });
 
             if (view === 'home') {
-                backBtn.classList.add('hidden');
-                headerTitle.textContent = "2026 청소년 수련회";
-                headerSubtitle.classList.remove('hidden');
+                if (backBtn) backBtn.classList.add('hidden');
+                if (headerTitle) headerTitle.textContent = "2026 청소년 수련회";
+                if (headerSubtitle) headerSubtitle.classList.remove('hidden');
             } else {
-                backBtn.classList.remove('hidden');
-                headerSubtitle.classList.add('hidden');
+                if (backBtn) backBtn.classList.remove('hidden');
+                if (headerSubtitle) headerSubtitle.classList.add('hidden');
             }
 
             switch (view) {
                 case 'home': renderHome(); break;
-                case 'members': headerTitle.textContent = "참석자 명단"; renderMembers(); break;
-                case 'bus': headerTitle.textContent = "버스 탑승 확인"; renderBus(); break;
-                case 'schedule': headerTitle.textContent = "수련회 일정표"; renderSchedule(); break;
-                case 'lodging': headerTitle.textContent = "숙소 및 방 배정"; renderLodging(); break;
-                case 'board': headerTitle.textContent = "익명 나눔 게시판"; renderBoard(); break;
+                case 'members': if (headerTitle) headerTitle.textContent = "참석자 명단"; renderMembers(); break;
+                case 'bus': if (headerTitle) headerTitle.textContent = "버스 탑승 확인"; renderBus(); break;
+                case 'schedule': if (headerTitle) headerTitle.textContent = "수련회 일정표"; renderSchedule(); break;
+                case 'lodging': if (headerTitle) headerTitle.textContent = "숙소 및 방 배정"; renderLodging(); break;
+                case 'board': if (headerTitle) headerTitle.textContent = "익명 나눔 게시판"; renderBoard(); break;
             }
 
             if (window.lucide) lucide.createIcons();
@@ -477,7 +477,6 @@
             const medical = appData.medicalInfo || defaultAppData.medicalInfo;
 
             main.innerHTML = `
-                <!-- Main Header Banner -->
                 <div class="relative bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 rounded-2xl p-5 text-white shadow-lg mb-4 overflow-hidden border-b-4 border-indigo-900/60">
                     <div class="absolute -right-3 -bottom-3 opacity-15"><i data-lucide="church" class="w-36 h-36"></i></div>
                     <div class="flex items-center space-x-2 mb-3">
@@ -491,7 +490,6 @@
                     </div>
                 </div>
 
-                <!-- Quick Navigation Buttons -->
                 <div class="flex justify-between items-center mb-2 px-1">
                     <h3 class="text-xs sm:text-sm font-black text-slate-500 uppercase tracking-wider">빠른 메뉴</h3>
                     <button onclick="navigateTo('board')" class="bg-indigo-600 hover:bg-indigo-700 active:translate-y-0.5 text-white px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center space-x-1 shadow-sm border-b-2 border-indigo-800 transition">
@@ -529,7 +527,6 @@
                     </button>
                 </div>
 
-                <!-- Web App Tip Box -->
                 <div class="bg-blue-50/90 border border-blue-200 rounded-2xl p-3.5 mb-3 flex items-center justify-between text-xs sm:text-sm text-blue-900 shadow-2xs">
                     <div class="flex items-center space-x-2 font-medium">
                         <i data-lucide="smartphone" class="w-5 h-5 text-blue-600 shrink-0"></i>
@@ -537,7 +534,6 @@
                     </div>
                 </div>
 
-                <!-- Important Notice Card -->
                 <div class="bg-slate-50 border border-slate-200 border-b-2 border-b-slate-300 rounded-2xl p-4 space-y-3.5 text-slate-800 shadow-xs">
                     <div class="flex items-center space-x-2 text-blue-600 font-extrabold text-base sm:text-lg border-b pb-2">
                         <i data-lucide="bell" class="w-5 h-5"></i>
@@ -562,7 +558,6 @@
                         <p class="pl-5 font-bold text-slate-800 text-sm sm:text-base leading-relaxed">${appData.supplies}</p>
                     </div>
 
-                    <!-- Teams Info -->
                     <div class="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs space-y-2.5">
                         <p class="font-extrabold text-indigo-600 text-sm sm:text-base flex items-center"><i data-lucide="users-2" class="w-4 h-4 mr-1.5"></i> 섬김팀 안내</p>
                         <div class="pl-5 space-y-2 text-xs sm:text-sm">
@@ -579,7 +574,6 @@
                         </div>
                     </div>
 
-                    <!-- Emergency & Medical Info -->
                     <div class="bg-white p-4 rounded-xl border border-rose-100 shadow-xs space-y-3 bg-gradient-to-br from-white to-rose-50/30">
                         <p class="font-extrabold text-rose-600 text-sm sm:text-base flex items-center">
                             <i data-lucide="activity" class="w-4.5 h-4.5 mr-1.5 text-rose-500"></i>
@@ -612,7 +606,6 @@
                         </div>
                     </div>
 
-                    <!-- Prayer Topics -->
                     <div class="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs space-y-2">
                         <p class="font-extrabold text-emerald-600 text-sm sm:text-base flex items-center"><i data-lucide="heart" class="w-4 h-4 mr-1.5"></i> 수련회 기도제목</p>
                         <ul class="pl-5 space-y-1.5 text-slate-700 leading-relaxed text-xs sm:text-sm font-medium">
@@ -681,7 +674,7 @@
         function toggleMemberCheck(id) {
             const m = appData.members.find(x => x.id === id);
             if (m) {
-                m.checked = !m.checked; // 독립된 명단 체크 값
+                m.checked = !m.checked;
                 saveData();
                 navigateTo('members', true);
             }
@@ -796,7 +789,7 @@
         function toggleBusCheck(memberId) {
             const member = appData.members.find(m => m.id === memberId);
             if (member) {
-                member.busChecked = !member.busChecked; // 버스 승차 전용 체크 값
+                member.busChecked = !member.busChecked;
                 lastSelectedName = member.name + (member.busChecked ? ' (승차 완료)' : ' (승차 취소)');
                 saveData();
                 navigateTo('bus', true);
@@ -917,7 +910,6 @@
             const posts = appData.posts || [];
 
             main.innerHTML = `
-                <!-- 게시판 작성 폼 -->
                 <div class="bg-white p-3.5 rounded-2xl border border-indigo-100 border-b-2 border-b-indigo-200 shadow-xs mb-3 space-y-2.5">
                     <div class="flex items-center space-x-1.5 text-indigo-700 font-extrabold text-xs sm:text-sm">
                         <i data-lucide="edit-3" class="w-4 h-4"></i>
@@ -1118,13 +1110,13 @@
             }
         }
 
-        function openMemberForm(id = null) {
-            editingMemberId = id;
+        function openMemberForm(id) {
+            editingMemberId = id || null;
             document.getElementById('member-form-modal').classList.remove('hidden');
             const titleEl = document.getElementById('member-form-title');
             
             if (id) {
-                titleEl.textContent = "명단 수정";
+                if (titleEl) titleEl.textContent = "명단 수정";
                 const m = appData.members.find(x => x.id === id);
                 if (m) {
                     document.getElementById('m-form-name').value = m.name || '';
@@ -1135,7 +1127,7 @@
                     document.getElementById('m-form-room').value = m.room || '201호';
                 }
             } else {
-                titleEl.textContent = "명단 추가";
+                if (titleEl) titleEl.textContent = "명단 추가";
                 document.getElementById('m-form-name').value = '';
                 document.getElementById('m-form-role').value = '학생';
                 document.getElementById('m-form-grade').value = '1-1';
@@ -1213,89 +1205,8 @@
             }
         }
 
-        // DOM Ready Initial Render
         document.addEventListener('DOMContentLoaded', () => {
             navigateTo('home');
-        });
-    </script>
-
-    <!-- Cloud Synchronization (Firestore Module) -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCymavtQxSuMSCvBD_MNTbyLqEx_gIF2Ko",
-            authDomain: "jiguchonyouth.firebaseapp.com",
-            databaseURL: "https://jiguchonyouth-default-rtdb.firebaseio.com",
-            projectId: "jiguchonyouth",
-            storageBucket: "jiguchonyouth.firebasestorage.app",
-            messagingSenderId: "56578766326",
-            appId: "1:56578766326:web:c9af6c5f41f3bc03a443d7",
-            measurementId: "G-WQCG7K64GZ"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // Firestore 저장 위치 문서 설정 (새로운 키 main_v3 사용으로 과거 데이터 원천 차단)
-        const docRef = doc(db, 'retreatData', 'main_v3');
-
-        const initAuth = async () => {
-            try {
-                await signInAnonymously(auth);
-            } catch (err) {
-                console.error("Firebase 익명 로그인 오류:", err);
-            }
-        };
-
-        await initAuth();
-
-        window.firebaseSetData = async function(data) {
-            try {
-                await setDoc(docRef, { payload: JSON.stringify(data) }, { merge: true });
-            } catch (e) {
-                console.error("Firestore 데이터 저장 실패:", e);
-            }
-        };
-
-        onSnapshot(docRef, (snapshot) => {
-            if (snapshot.exists()) {
-                const data = snapshot.data();
-                if (data && data.payload) {
-                    try {
-                        const remoteData = JSON.parse(data.payload);
-                        
-                        if (remoteData.schedule) {
-                            remoteData.schedule.forEach((dayObj, dIdx) => {
-                                if (defaultAppData.schedule[dIdx] && dayObj.events) {
-                                    dayObj.events.forEach((ev, eIdx) => {
-                                        const defEv = defaultAppData.schedule[dIdx].events[eIdx];
-                                        if (defEv) {
-                                            if (defEv.menu) ev.menu = defEv.menu;
-                                            if (defEv.speaker) ev.speaker = defEv.speaker;
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                        if (!remoteData.posts) remoteData.posts = defaultAppData.posts || [];
-                        if (!remoteData.teams) remoteData.teams = defaultAppData.teams;
-                        if (!remoteData.medicalInfo) remoteData.medicalInfo = defaultAppData.medicalInfo;
-
-                        appData = remoteData;
-                        navigateTo(currentView, true);
-                    } catch (err) {
-                        console.error("원격 데이터 분석 오류:", err);
-                    }
-                }
-            } else {
-                window.firebaseSetData(defaultAppData);
-            }
-        }, (error) => {
-            console.error("Firestore 실시간 데이터 수신 오류:", error);
         });
     </script>
 </body>
