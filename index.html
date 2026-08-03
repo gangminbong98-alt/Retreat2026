@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>2026 지구촌교회 수지 12시 중등마을 여름수련회</title>
+    <title>열두마을</title>
     <!-- Web App & PWA settings -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -49,7 +49,7 @@
                     <button id="back-btn" class="hidden p-1.5 hover:bg-white/20 active:scale-95 rounded-full transition shrink-0" onclick="navigateTo('home')">
                         <i data-lucide="chevron-left" class="w-5 h-5"></i>
                     </button>
-                    <h1 id="header-title" class="text-lg sm:text-xl font-black tracking-tight whitespace-nowrap truncate">2026 청소년 수련회</h1>
+                    <h1 id="header-title" class="text-lg sm:text-xl font-black tracking-tight whitespace-nowrap truncate">열두마을</h1>
                 </div>
                 <div class="flex items-center space-x-1.5 shrink-0">
                     <span id="header-subtitle" class="text-xs bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded-full font-extrabold border border-white/30 whitespace-nowrap">12시중등</span>
@@ -205,7 +205,7 @@
         };
 
         const defaultAppData = {
-            title: "2026 지구촌교회 수지 12시 중등마을 여름수련회",
+            title: "열두마을",
             theme: "BUILD UP 하나님 나라 세우는 세대",
             location: "대전 청소년 수련마을",
             locationAddress: "대전 중구 방아미로 131 (침산동)",
@@ -395,7 +395,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v14');
+                const saved = localStorage.getItem('retreatAppData_v15');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -1006,7 +1006,7 @@
                 document.getElementById('admin-panel-modal').classList.remove('hidden');
                 switchAdminTab('members');
             } else {
-                document.getElementById('pass-error-msg').classList.remove('hidden');
+                document.getElementById('pass-error-msg').classList.add('hidden');
             }
         }
         function closeAdminPanel() { document.getElementById('admin-panel-modal').classList.add('hidden'); navigateTo(currentView); }
@@ -1201,7 +1201,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'main_v14');
+        const docRef = doc(db, 'retreatData', 'main_v15');
 
         const initAuth = async () => {
             try {
@@ -1220,7 +1220,7 @@
                     const serverData = JSON.parse(snap.data().payload);
                     appData.posts = serverData.posts || appData.posts;
                 }
-                localStorage.setItem('retreatAppData_v14', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v15', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1241,7 +1241,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_v14', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v15', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1262,7 +1262,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_v14', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v15', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1283,7 +1283,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_v14', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_v15', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
