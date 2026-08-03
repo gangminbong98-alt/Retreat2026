@@ -377,7 +377,13 @@
                     events: [
                         { time: "09:00 - 10:00", title: "집합, 접수 및 출발모임", location: "수지채플 310호", note: "오전 9시 20분 집합" },
                         { time: "10:00 - 12:00", title: "버스 출발 (대전 이동)", location: "대형버스터미널", note: "09:50 버스 탑승" },
-                        { time: "12:00 - 15:00", title: "대전 시티투어 & 점심식사", location: "대전 시내", note: "중앙로 맛집 및 카페 지도 참고", mapImage: "https://i.ibb.co/S4qP0f8f/1000075295.png" },
+                        { 
+                            time: "12:00 - 15:00", 
+                            title: "대전 시티투어 & 점심식사", 
+                            location: "대전 시내", 
+                            note: "중앙로 맛집 및 카페 지도 참고", 
+                            mapImage: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80" 
+                        },
                         { time: "15:00 - 16:00", title: "수련장 도착 / O.T", location: "대강당", note: "" },
                         { time: "16:00 - 17:00", title: "Build up Action", location: "소강당", note: "" },
                         { time: "17:00 - 18:00", title: "쉬는시간", location: "각 숙소", note: "" },
@@ -425,7 +431,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v18');
+                const saved = localStorage.getItem('retreatAppData_v19');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -1245,7 +1251,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'main_v18');
+        const docRef = doc(db, 'retreatData', 'main_v19');
 
         const initAuth = async () => {
             try {
@@ -1264,7 +1270,7 @@
                     const serverData = JSON.parse(snap.data().payload);
                     appData.posts = serverData.posts || appData.posts;
                 }
-                localStorage.setItem('retreatAppData_v18', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v19', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1285,7 +1291,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_v18', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v19', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1306,7 +1312,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_v18', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v19', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1327,7 +1333,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_v18', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_v19', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
