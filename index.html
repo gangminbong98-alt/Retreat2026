@@ -8,8 +8,9 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="12시중등수련회">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3208/3208035.png">
+    <meta name="apple-mobile-web-app-title" content="열두마을">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/3ykfL6C3/1000075197.jpg">
+    <link rel="icon" href="https://i.ibb.co/3ykfL6C3/1000075197.jpg">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -394,7 +395,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v12');
+                const saved = localStorage.getItem('retreatAppData_v14');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -1200,7 +1201,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'main_v12');
+        const docRef = doc(db, 'retreatData', 'main_v14');
 
         const initAuth = async () => {
             try {
@@ -1212,23 +1213,20 @@
 
         await initAuth();
 
-        // [완벽한 병합 저장] 서버의 최신 게시판 글과 내 폰의 체크 상태를 원자적으로 결합하여 저장
         window.saveDataAtomic = async function() {
             try {
                 const snap = await getDoc(docRef);
                 if (snap.exists() && snap.data().payload) {
                     const serverData = JSON.parse(snap.data().payload);
-                    // 서버에 있는 게시글 목록은 절대 유실되지 않게 가져옴
                     appData.posts = serverData.posts || appData.posts;
                 }
-                localStorage.setItem('retreatAppData_v12', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v14', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
             }
         };
 
-        // 게시글 추가 시 서버 최신 상태와 안전하게 병합
         window.fetchLatestAndSavePost = async function(newPost) {
             try {
                 const snap = await getDoc(docRef);
@@ -1243,7 +1241,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_v12', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v14', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1264,7 +1262,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_v12', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v14', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1285,7 +1283,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_v12', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_v14', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
@@ -1298,7 +1296,6 @@
             }
         };
 
-        // 실시간 감지: 상대방이 명단/버스 체크나 게시글을 작성하면 즉시 반영
         onSnapshot(docRef, (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.data();
@@ -1317,7 +1314,6 @@
 
                         appData = remoteData;
                         
-                        // 현재 보고 있는 화면을 실시간으로 다시 그려서 반영
                         if (currentView === 'board') {
                             renderBoard();
                             if (isTyping) {
