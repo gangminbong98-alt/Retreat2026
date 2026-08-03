@@ -12,11 +12,11 @@
     <meta name="apple-mobile-web-app-title" content="열두마을">
     <meta name="application-name" content="열두마을">
     
-    <!-- Custom Icon Links -->
-    <link rel="apple-touch-icon" sizes="512x512" href="https://i.ibb.co/3ykfL6C3/1000075197.jpg">
-    <link rel="icon" type="image/jpeg" sizes="512x512" href="https://i.ibb.co/3ykfL6C3/1000075197.jpg">
+    <!-- Mobile & Apple Icon Links -->
+    <link rel="apple-touch-icon" href="https://i.ibb.co/3ykfL6C3/1000075197.jpg">
+    <link rel="shortcut icon" href="https://i.ibb.co/3ykfL6C3/1000075197.jpg">
 
-    <!-- Dynamic Web App Manifest Injection -->
+    <!-- Web App Manifest for Android/Chrome Auto Icon Recognition -->
     <script>
         const manifest = {
             "name": "열두마을",
@@ -29,12 +29,12 @@
                 {
                     "src": "https://i.ibb.co/3ykfL6C3/1000075197.jpg",
                     "sizes": "512x512",
-                    "type": "image/jpeg"
+                    "type": "image/jpeg",
+                    "purpose": "any maskable"
                 }
             ]
         };
-        const stringManifest = JSON.stringify(manifest);
-        const blob = new Blob([stringManifest], {type: 'application/json'});
+        const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
         const manifestURL = URL.createObjectURL(blob);
         const linkTag = document.createElement('link');
         linkTag.rel = 'manifest';
@@ -235,7 +235,7 @@
         };
 
         const defaultAppData = {
-            title: "2026 청소년 수련회",
+            title: "2026 지구촌교회 수지 12시 중등마을 여름수련회",
             theme: "BUILD UP 하나님 나라 세우는 세대",
             location: "대전 청소년 수련마을",
             locationAddress: "대전 중구 방아미로 131 (침산동)",
@@ -425,7 +425,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v16');
+                const saved = localStorage.getItem('retreatAppData_v17');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -1231,7 +1231,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'main_v16');
+        const docRef = doc(db, 'retreatData', 'main_v17');
 
         const initAuth = async () => {
             try {
@@ -1250,7 +1250,7 @@
                     const serverData = JSON.parse(snap.data().payload);
                     appData.posts = serverData.posts || appData.posts;
                 }
-                localStorage.setItem('retreatAppData_v16', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v17', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1271,7 +1271,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_v16', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v17', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1292,7 +1292,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_v16', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v17', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1313,7 +1313,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_v16', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_v17', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
