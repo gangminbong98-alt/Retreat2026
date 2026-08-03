@@ -13,7 +13,7 @@
     <meta name="application-name" content="열두마을">
     
     <!-- Mobile & Apple Icon Links -->
-    <link rel="apple-touch-icon" href="https://i.ibb.co/3ykfL6C3/1000075197.jpg">
+    <link rel="apple-touch-icon" sizes="512x512" href="https://i.ibb.co/3ykfL6C3/1000075197.jpg">
     <link rel="shortcut icon" href="https://i.ibb.co/3ykfL6C3/1000075197.jpg">
 
     <!-- Web App Manifest for Android/Chrome Auto Icon Recognition -->
@@ -235,7 +235,7 @@
         };
 
         const defaultAppData = {
-            title: "2026 지구촌교회 수지 12시 중등마을 여름수련회",
+            title: "2026 청소년 수련회",
             theme: "BUILD UP 하나님 나라 세우는 세대",
             location: "대전 청소년 수련마을",
             locationAddress: "대전 중구 방아미로 131 (침산동)",
@@ -377,7 +377,7 @@
                     events: [
                         { time: "09:00 - 10:00", title: "집합, 접수 및 출발모임", location: "수지채플 310호", note: "오전 9시 20분 집합" },
                         { time: "10:00 - 12:00", title: "버스 출발 (대전 이동)", location: "대형버스터미널", note: "09:50 버스 탑승" },
-                        { time: "12:00 - 15:00", title: "대전 시티투어 & 점심식사", location: "대전 시내", note: "" },
+                        { time: "12:00 - 15:00", title: "대전 시티투어 & 점심식사", location: "대전 시내", note: "중앙로 맛집 및 카페 지도 참고", mapImage: "https://i.ibb.co/S4qP0f8f/1000075295.png" },
                         { time: "15:00 - 16:00", title: "수련장 도착 / O.T", location: "대강당", note: "" },
                         { time: "16:00 - 17:00", title: "Build up Action", location: "소강당", note: "" },
                         { time: "17:00 - 18:00", title: "쉬는시간", location: "각 숙소", note: "" },
@@ -425,7 +425,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v17');
+                const saved = localStorage.getItem('retreatAppData_v18');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -889,6 +889,20 @@
                                             <div class="text-slate-800 font-extrabold pl-0.5 text-xs sm:text-sm leading-normal">${displayMenu}</div>
                                         </div>
                                     ` : ''}
+
+                                    ${ev.mapImage ? `
+                                        <div class="mt-3 p-2 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                                            <p class="font-extrabold text-xs text-blue-700 mb-1.5 flex items-center">
+                                                <i data-lucide="map" class="w-4 h-4 mr-1"></i> 대전 중앙로 맛집 & 카페 지도
+                                            </p>
+                                            <a href="${ev.mapImage}" target="_blank" class="block group relative overflow-hidden rounded-lg border border-slate-300">
+                                                <img src="${ev.mapImage}" alt="중앙로 맛집 지도" class="w-full h-auto object-cover group-hover:scale-105 transition duration-300">
+                                                <div class="absolute inset-0 bg-black/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                                                    <span class="bg-black/70 text-white text-xs px-2.5 py-1 rounded-full font-bold">크게 보기 (클릭)</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    ` : ''}
                                 </div>
                             </div>
                         `;
@@ -1231,7 +1245,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'main_v17');
+        const docRef = doc(db, 'retreatData', 'main_v18');
 
         const initAuth = async () => {
             try {
@@ -1250,7 +1264,7 @@
                     const serverData = JSON.parse(snap.data().payload);
                     appData.posts = serverData.posts || appData.posts;
                 }
-                localStorage.setItem('retreatAppData_v17', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v18', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1271,7 +1285,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_v17', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v18', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1292,7 +1306,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_v17', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v18', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1313,7 +1327,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_v17', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_v18', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
