@@ -186,18 +186,19 @@
                             <label class="block text-slate-500 mb-1">구분</label>
                             <select id="m-form-role" class="w-full border rounded-lg px-2 py-1.5">
                                 <option value="학생">학생</option>
-                                <option value="교사">교사</option>
+                                <option value="목자">목자</option>
+                                <option value="봉사자">봉사자</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-slate-500 mb-1">소속(반)</label>
-                            <input type="text" id="m-form-grade" placeholder="1-1" class="w-full border rounded-lg px-2.5 py-1.5">
+                            <input type="text" id="m-form-grade" placeholder="중2-3" class="w-full border rounded-lg px-2.5 py-1.5">
                         </div>
                     </div>
                     <div class="grid grid-cols-3 gap-2">
                         <div>
                             <label class="block text-slate-500 mb-1">조</label>
-                            <input type="text" id="m-form-group" placeholder="1-1" class="w-full border rounded-lg px-2.5 py-1.5">
+                            <input type="text" id="m-form-group" placeholder="중2-3" class="w-full border rounded-lg px-2.5 py-1.5">
                         </div>
                         <div>
                             <label class="block text-slate-500 mb-1">버스</label>
@@ -205,12 +206,12 @@
                                 <option value="5호차">5호차</option>
                                 <option value="6호차">6호차</option>
                                 <option value="후발대">후발대</option>
-                                <option value="미정">미정</option>
+                                <option value="자차">자차</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-slate-500 mb-1">숙소</label>
-                            <input type="text" id="m-form-room" placeholder="301(1)" class="w-full border rounded-lg px-2.5 py-1.5">
+                            <input type="text" id="m-form-room" placeholder="309(2)" class="w-full border rounded-lg px-2.5 py-1.5">
                         </div>
                     </div>
                 </div>
@@ -276,82 +277,108 @@
             ],
             posts: [],
             members: [
-                { id: 1, name: "김은성", role: "학생", grade: "1-1", group: "1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
-                { id: 2, name: "김준", role: "학생", grade: "1-1", group: "1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
-                { id: 3, name: "박민서", role: "학생", grade: "1-1", group: "1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
-                { id: 4, name: "신지완", role: "학생", grade: "1-1", group: "1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
-                { id: 5, name: "윤영찬", role: "학생", grade: "1-1", group: "1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
-                { id: 6, name: "윤혜성", role: "학생", grade: "1-1", group: "1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
-                { id: 7, name: "이시원", role: "학생", grade: "1-1", group: "1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
-                { id: 8, name: "조이신", role: "학생", grade: "1-1", group: "1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
-                { id: 9, name: "김예준", role: "학생", grade: "1-1", group: "1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
-                { id: 10, name: "강혜준", role: "학생", grade: "1-2", group: "1-2", bus: "5호차", room: "310(1)", checked: false, busChecked: false },
-                { id: 11, name: "권민결", role: "학생", grade: "1-2", group: "1-2", bus: "5호차", room: "310(1)", checked: false, busChecked: false },
-                { id: 12, name: "이정민", role: "학생", grade: "1-2", group: "1-2", bus: "5호차", room: "310(1)", checked: false, busChecked: false },
-                { id: 13, name: "김은겸", role: "학생", grade: "1-2", group: "1-2", bus: "5호차", room: "310(1)", checked: false, busChecked: false },
-                { id: 14, name: "강주원", role: "학생", grade: "1-2", group: "1-2", bus: "5호차", room: "310(1)", checked: false, busChecked: false },
-                { id: 15, name: "김태빈", role: "학생", grade: "1-2", group: "1-2", bus: "후발대", room: "310(1)", checked: false, busChecked: false },
-                { id: 16, name: "최승현", role: "학생", grade: "1-2", group: "1-2", bus: "후발대", room: "310(1)", checked: false, busChecked: false },
-                { id: 17, name: "김강준", role: "학생", grade: "1-3", group: "1-3", bus: "5호차", room: "302(1)", checked: false, busChecked: false },
-                { id: 18, name: "김도윤", role: "학생", grade: "1-3", group: "1-3", bus: "5호차", room: "302(1)", checked: false, busChecked: false },
-                { id: 19, name: "박준혁", role: "학생", grade: "1-3", group: "1-3", bus: "5호차", room: "302(1)", checked: false, busChecked: false },
-                { id: 20, name: "이동하", role: "학생", grade: "1-3", group: "1-3", bus: "5호차", room: "302(1)", checked: false, busChecked: false },
-                { id: 21, name: "정시윤", role: "학생", grade: "1-3", group: "1-3", bus: "5호차", room: "302(1)", checked: false, busChecked: false },
-                { id: 22, name: "김예나", role: "학생", grade: "1-4", group: "1-4", bus: "5호차", room: "214(1)", checked: false, busChecked: false },
-                { id: 23, name: "김조이", role: "학생", grade: "1-4", group: "1-4", bus: "5호차", room: "214(1)", checked: false, busChecked: false },
-                { id: 24, name: "박지민", role: "학생", grade: "1-4", group: "1-4", bus: "5호차", room: "214(1)", checked: false, busChecked: false },
-                { id: 25, name: "부예원", role: "학생", grade: "1-4", group: "1-4", bus: "5호차", room: "214(1)", checked: false, busChecked: false },
-                { id: 26, name: "장하린", role: "학생", grade: "1-4", group: "1-4", bus: "5호차", room: "214(1)", checked: false, busChecked: false },
-                { id: 27, name: "장하슬", role: "학생", grade: "1-4", group: "1-4", bus: "5호차", room: "214(1)", checked: false, busChecked: false },
-                { id: 28, name: "김현서", role: "학생", grade: "1-5", group: "1-5", bus: "5호차", room: "308(2)", checked: false, busChecked: false },
-                { id: 29, name: "나지민", role: "학생", grade: "1-5", group: "1-5", bus: "5호차", room: "308(2)", checked: false, busChecked: false },
-                { id: 30, name: "신다온", role: "학생", grade: "1-5", group: "1-5", bus: "5호차", room: "308(2)", checked: false, busChecked: false },
-                { id: 31, name: "김아라", role: "학생", grade: "1-6", group: "1-6", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
-                { id: 32, name: "김해나", role: "학생", grade: "1-6", group: "1-6", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
-                { id: 33, name: "유다인", role: "학생", grade: "1-6", group: "1-6", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
-                { id: 34, name: "이서아", role: "학생", grade: "1-6", group: "1-6", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
-                { id: 35, name: "이아윤", role: "학생", grade: "1-6", group: "1-6", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
-                { id: 36, name: "이혜린", role: "학생", grade: "1-6", group: "1-6", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
-                { id: 37, name: "조이헌", role: "학생", grade: "1-6", group: "1-6", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
-                { id: 38, name: "방준서", role: "학생", grade: "2-1", group: "2-1", bus: "6호차", room: "316(1)", checked: false, busChecked: false },
-                { id: 39, name: "이승환", role: "학생", grade: "2-1", group: "2-1", bus: "6호차", room: "316(1)", checked: false, busChecked: false },
-                { id: 40, name: "이예준", role: "학생", grade: "2-1", group: "2-1", bus: "6호차", room: "316(1)", checked: false, busChecked: false },
-                { id: 41, name: "정주원", role: "학생", grade: "2-1", group: "2-1", bus: "6호차", room: "316(1)", checked: false, busChecked: false },
-                { id: 42, name: "최온유", role: "학생", grade: "2-1", group: "2-1", bus: "6호차", room: "316(1)", checked: false, busChecked: false },
-                { id: 43, name: "허은우", role: "학생", grade: "2-1", group: "2-1", bus: "6호차", room: "316(1)", checked: false, busChecked: false },
-                { id: 44, name: "김윤성", role: "학생", grade: "2-2", group: "2-2", bus: "6호차", room: "204(2)", checked: false, busChecked: false },
-                { id: 45, name: "이하빈", role: "학생", grade: "2-2", group: "2-2", bus: "후발대", room: "204(2)", checked: false, busChecked: false },
-                { id: 46, name: "김주아", role: "학생", grade: "2-3", group: "2-3", bus: "6호차", room: "309(2)", checked: false, busChecked: false },
-                { id: 47, name: "김태경", role: "학생", grade: "2-3", group: "2-3", bus: "6호차", room: "309(2)", checked: false, busChecked: false },
-                { id: 48, name: "윤서현", role: "학생", grade: "2-3", group: "2-3", bus: "6호차", room: "309(2)", checked: false, busChecked: false },
-                { id: 49, name: "나윤주", role: "학생", grade: "2-4", group: "2-4", bus: "6호차", room: "310(2)", checked: false, busChecked: false },
-                { id: 50, name: "신하은", role: "학생", grade: "2-4", group: "2-4", bus: "6호차", room: "310(2)", checked: false, busChecked: false },
-                { id: 51, name: "오연서", role: "학생", grade: "2-4", group: "2-4", bus: "6호차", room: "310(2)", checked: false, busChecked: false },
-                { id: 52, name: "정지민", role: "학생", grade: "2-4", group: "2-4", bus: "6호차", room: "310(2)", checked: false, busChecked: false },
-                { id: 53, name: "김준태", role: "학생", grade: "3-1", group: "3-1", bus: "6호차", room: "205(2)", checked: false, busChecked: false },
-                { id: 54, name: "신동훈", role: "학생", grade: "3-1", group: "3-1", bus: "6호차", room: "205(2)", checked: false, busChecked: false },
-                { id: 55, name: "황제하", role: "학생", grade: "3-1", group: "3-1", bus: "6호차", room: "205(2)", checked: false, busChecked: false },
-                { id: 56, name: "김선율", role: "학생", grade: "3-1", group: "3-1", bus: "후발대", room: "205(2)", checked: false, busChecked: false },
-                { id: 57, name: "윤환희", role: "학생", grade: "3-2", group: "3-2", bus: "6호차", room: "311(2)", checked: false, busChecked: false },
-                { id: 58, name: "이하민", role: "학생", grade: "3-4", group: "3-4", bus: "6호차", room: "312(2)", checked: false, busChecked: false },
-                { id: 59, name: "김태린", role: "학생", grade: "3-6", group: "3-6", bus: "6호차", room: "312(2)", checked: false, busChecked: false },
-                { id: 60, name: "염유리아", role: "학생", grade: "3-6", group: "3-6", bus: "6호차", room: "312(2)", checked: false, busChecked: false },
-                { id: 61, name: "이사랑", role: "학생", grade: "3-6", group: "3-6", bus: "6호차", room: "312(2)", checked: false, busChecked: false },
-                { id: 62, name: "최다애", role: "학생", grade: "3-6", group: "3-6", bus: "6호차", room: "312(2)", checked: false, busChecked: false },
-                { id: 63, name: "강선후", role: "학생", grade: "3-8", group: "3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
-                { id: 64, name: "김민성", role: "학생", grade: "3-8", group: "3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
-                { id: 65, name: "김율기", role: "학생", grade: "3-8", group: "3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
-                { id: 66, name: "박주원", role: "학생", grade: "3-8", group: "3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
-                { id: 67, name: "박준서", role: "학생", grade: "3-8", group: "3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
-                { id: 68, name: "박하민", role: "학생", grade: "3-8", group: "3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
-                { id: 69, name: "윤상호", role: "학생", grade: "3-8", group: "3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
-                { id: 70, name: "정시원", role: "학생", grade: "3-8", group: "3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
-                { id: 71, name: "나하진", role: "학생", grade: "3-9", group: "3-9", bus: "6호차", room: "309(1)", checked: false, busChecked: false }
+                /* 학생 명단 (71명) */
+                { id: 1, name: "김은성", role: "학생", grade: "중1-1", group: "중1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
+                { id: 2, name: "김준", role: "학생", grade: "중1-1", group: "중1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
+                { id: 3, name: "박민서", role: "학생", grade: "중1-1", group: "중1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
+                { id: 4, name: "신지완", role: "학생", grade: "중1-1", group: "중1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
+                { id: 5, name: "윤영찬", role: "학생", grade: "중1-1", group: "중1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
+                { id: 6, name: "윤혜성", role: "학생", grade: "중1-1", group: "중1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
+                { id: 7, name: "이시원", role: "학생", grade: "중1-1", group: "중1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
+                { id: 8, name: "조이신", role: "학생", grade: "중1-1", group: "중1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
+                { id: 9, name: "김예준", role: "학생", grade: "중1-1", group: "중1-1", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
+                { id: 10, name: "강혜준", role: "학생", grade: "중1-2", group: "중1-2", bus: "5호차", room: "310(1)", checked: false, busChecked: false },
+                { id: 11, name: "권민결", role: "학생", grade: "중1-2", group: "중1-2", bus: "5호차", room: "310(1)", checked: false, busChecked: false },
+                { id: 12, name: "이정민", role: "학생", grade: "중1-2", group: "중1-2", bus: "5호차", room: "310(1)", checked: false, busChecked: false },
+                { id: 13, name: "김은겸", role: "학생", grade: "중1-2", group: "중1-2", bus: "5호차", room: "310(1)", checked: false, busChecked: false },
+                { id: 14, name: "강주원", role: "학생", grade: "중1-2", group: "중1-2", bus: "5호차", room: "310(1)", checked: false, busChecked: false },
+                { id: 15, name: "김태빈", role: "학생", grade: "중1-2", group: "중1-2", bus: "후발대", room: "310(1)", checked: false, busChecked: false },
+                { id: 16, name: "최승현", role: "학생", grade: "중1-2", group: "중1-2", bus: "후발대", room: "310(1)", checked: false, busChecked: false },
+                { id: 17, name: "김강준", role: "학생", grade: "중1-3", group: "중1-3", bus: "5호차", room: "302(1)", checked: false, busChecked: false },
+                { id: 18, name: "김도윤", role: "학생", grade: "중1-3", group: "중1-3", bus: "5호차", room: "302(1)", checked: false, busChecked: false },
+                { id: 19, name: "박준혁", role: "학생", grade: "중1-3", group: "중1-3", bus: "5호차", room: "302(1)", checked: false, busChecked: false },
+                { id: 20, name: "이동하", role: "학생", grade: "중1-3", group: "중1-3", bus: "5호차", room: "302(1)", checked: false, busChecked: false },
+                { id: 21, name: "정시윤", role: "학생", grade: "중1-3", group: "중1-3", bus: "5호차", room: "302(1)", checked: false, busChecked: false },
+                { id: 22, name: "김예나", role: "학생", grade: "중1-4", group: "중1-4", bus: "5호차", room: "214(1)", checked: false, busChecked: false },
+                { id: 23, name: "김조이", role: "학생", grade: "중1-4", group: "중1-4", bus: "5호차", room: "214(1)", checked: false, busChecked: false },
+                { id: 24, name: "박지민", role: "학생", grade: "중1-4", group: "중1-4", bus: "5호차", room: "214(1)", checked: false, busChecked: false },
+                { id: 25, name: "부예원", role: "학생", grade: "중1-4", group: "중1-4", bus: "5호차", room: "214(1)", checked: false, busChecked: false },
+                { id: 26, name: "장하린", role: "학생", grade: "중1-4", group: "중1-4", bus: "5호차", room: "214(1)", checked: false, busChecked: false },
+                { id: 27, name: "장하슬", role: "학생", grade: "중1-4", group: "중1-4", bus: "5호차", room: "214(1)", checked: false, busChecked: false },
+                { id: 28, name: "김현서", role: "학생", grade: "중1-5", group: "중1-5", bus: "5호차", room: "308(2)", checked: false, busChecked: false },
+                { id: 29, name: "나지민", role: "학생", grade: "중1-5", group: "중1-5", bus: "5호차", room: "308(2)", checked: false, busChecked: false },
+                { id: 30, name: "신다온", role: "학생", grade: "중1-5", group: "중1-5", bus: "5호차", room: "308(2)", checked: false, busChecked: false },
+                { id: 31, name: "김아라", role: "학생", grade: "중1-6", group: "중1-6", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
+                { id: 32, name: "김해나", role: "학생", grade: "중1-6", group: "중1-6", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
+                { id: 33, name: "유다인", role: "학생", grade: "중1-6", group: "중1-6", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
+                { id: 34, name: "이서아", role: "학생", grade: "중1-6", group: "중1-6", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
+                { id: 35, name: "이아윤", role: "학생", grade: "중1-6", group: "중1-6", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
+                { id: 36, name: "이혜린", role: "학생", grade: "중1-6", group: "중1-6", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
+                { id: 37, name: "조이헌", role: "학생", grade: "중1-6", group: "중1-6", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
+                { id: 38, name: "방준서", role: "학생", grade: "중2-1", group: "중2-1", bus: "6호차", room: "316(1)", checked: false, busChecked: false },
+                { id: 39, name: "이승환", role: "학생", grade: "중2-1", group: "중2-1", bus: "6호차", room: "316(1)", checked: false, busChecked: false },
+                { id: 40, name: "이예준", role: "학생", grade: "중2-1", group: "중2-1", bus: "6호차", room: "316(1)", checked: false, busChecked: false },
+                { id: 41, name: "정주원", role: "학생", grade: "중2-1", group: "중2-1", bus: "6호차", room: "316(1)", checked: false, busChecked: false },
+                { id: 42, name: "최온유", role: "학생", grade: "중2-1", group: "중2-1", bus: "6호차", room: "316(1)", checked: false, busChecked: false },
+                { id: 43, name: "허은우", role: "학생", grade: "중2-1", group: "중2-1", bus: "6호차", room: "316(1)", checked: false, busChecked: false },
+                { id: 44, name: "김윤성", role: "학생", grade: "중2-2", group: "중2-2", bus: "6호차", room: "204(2)", checked: false, busChecked: false },
+                { id: 45, name: "이하빈", role: "학생", grade: "중2-2", group: "중2-2", bus: "후발대", room: "204(2)", checked: false, busChecked: false },
+                { id: 46, name: "김주아", role: "학생", grade: "중2-3", group: "중2-3", bus: "6호차", room: "309(2)", checked: false, busChecked: false },
+                { id: 47, name: "김태경", role: "학생", grade: "중2-3", group: "중2-3", bus: "6호차", room: "309(2)", checked: false, busChecked: false },
+                { id: 48, name: "윤서현", role: "학생", grade: "중2-3", group: "중2-3", bus: "6호차", room: "309(2)", checked: false, busChecked: false },
+                { id: 49, name: "나윤주", role: "학생", grade: "중2-4", group: "중2-4", bus: "6호차", room: "310(2)", checked: false, busChecked: false },
+                { id: 50, name: "신하은", role: "학생", grade: "중2-4", group: "중2-4", bus: "6호차", room: "310(2)", checked: false, busChecked: false },
+                { id: 51, name: "오연서", role: "학생", grade: "중2-4", group: "중2-4", bus: "6호차", room: "310(2)", checked: false, busChecked: false },
+                { id: 52, name: "정지민", role: "학생", grade: "중2-4", group: "중2-4", bus: "6호차", room: "310(2)", checked: false, busChecked: false },
+                { id: 53, name: "김준태", role: "학생", grade: "중3-1", group: "중3-1", bus: "6호차", room: "205(2)", checked: false, busChecked: false },
+                { id: 54, name: "신동훈", role: "학생", grade: "중3-1", group: "중3-1", bus: "6호차", room: "205(2)", checked: false, busChecked: false },
+                { id: 55, name: "황제하", role: "학생", grade: "중3-1", group: "중3-1", bus: "6호차", room: "205(2)", checked: false, busChecked: false },
+                { id: 56, name: "김선율", role: "학생", grade: "중3-1", group: "중3-1", bus: "후발대", room: "205(2)", checked: false, busChecked: false },
+                { id: 57, name: "윤환희", role: "학생", grade: "중3-2", group: "중3-2", bus: "6호차", room: "311(2)", checked: false, busChecked: false },
+                { id: 58, name: "이하민", role: "학생", grade: "중3-4", group: "중3-4", bus: "6호차", room: "312(2)", checked: false, busChecked: false },
+                { id: 59, name: "김태린", role: "학생", grade: "중3-6", group: "중3-6", bus: "6호차", room: "312(2)", checked: false, busChecked: false },
+                { id: 60, name: "염유리아", role: "학생", grade: "중3-6", group: "중3-6", bus: "6호차", room: "312(2)", checked: false, busChecked: false },
+                { id: 61, name: "이사랑", role: "학생", grade: "중3-6", group: "중3-6", bus: "6호차", room: "312(2)", checked: false, busChecked: false },
+                { id: 62, name: "최다애", role: "학생", grade: "중3-6", group: "중3-6", bus: "6호차", room: "312(2)", checked: false, busChecked: false },
+                { id: 63, name: "강선후", role: "학생", grade: "중3-8", group: "중3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
+                { id: 64, name: "김민성", role: "학생", grade: "중3-8", group: "중3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
+                { id: 65, name: "김율기", role: "학생", grade: "중3-8", group: "중3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
+                { id: 66, name: "박주원", role: "학생", grade: "중3-8", group: "중3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
+                { id: 67, name: "박준서", role: "학생", grade: "중3-8", group: "중3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
+                { id: 68, name: "박하민", role: "학생", grade: "중3-8", group: "3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
+                { id: 69, name: "윤상호", role: "학생", grade: "중3-8", group: "중3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
+                { id: 70, name: "정시원", role: "학생", grade: "중3-8", group: "중3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
+                { id: 71, name: "나하진", role: "학생", grade: "중3-9", group: "중3-9", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
+
+                /* 인솔목자 및 봉사자 명단 (추가 23명, 1호차 미포함) */
+                { id: 101, name: "김옥", role: "목자", grade: "인솔", group: "목자", bus: "5호차", room: "313(2)", checked: false, busChecked: false },
+                { id: 102, name: "김민경", role: "목자", grade: "인솔", group: "목자", bus: "5호차", room: "313(2)", checked: false, busChecked: false },
+                { id: 103, name: "한근식", role: "목자", grade: "인솔", group: "목자", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
+                { id: 104, name: "반경혜", role: "목자", grade: "인솔", group: "목자", bus: "5호차", room: "311(2)", checked: false, busChecked: false },
+                { id: 105, name: "오재국", role: "목자", grade: "인솔", group: "목자", bus: "5호차", room: "302(1)", checked: false, busChecked: false },
+                { id: 106, name: "한혜숙", role: "목자", grade: "인솔", group: "목자", bus: "5호차", room: "214(1)", checked: false, busChecked: false },
+                { id: 107, name: "조현준", role: "목자", grade: "인솔", group: "목자", bus: "5호차", room: "308(2)", checked: false, busChecked: false },
+                { id: 108, name: "김보경", role: "목자", grade: "인솔", group: "목자", bus: "5호차", room: "215(1)", checked: false, busChecked: false },
+                { id: 109, name: "박유신", role: "목자", grade: "인솔", group: "목자", bus: "6호차", room: "316(1)", checked: false, busChecked: false },
+                { id: 110, name: "이종근", role: "목자", grade: "인솔", group: "목자", bus: "6호차", room: "204(2)", checked: false, busChecked: false },
+                { id: 111, name: "김정화", role: "목자", grade: "인솔", group: "목자", bus: "자차", room: "309(2)", checked: false, busChecked: false },
+                { id: 112, name: "배춘환", role: "목자", grade: "인솔", group: "목자", bus: "6호차", room: "310(2)", checked: false, busChecked: false },
+                { id: 113, name: "김태경(목자)", role: "목자", grade: "인솔", group: "목자", bus: "5호차", room: "310(1)", checked: false, busChecked: false },
+                { id: 114, name: "강민봉", role: "목자", grade: "인솔", group: "목자", bus: "6호차", room: "205(2)", checked: false, busChecked: false },
+                { id: 115, name: "이은희", role: "목자", grade: "인솔", group: "목자", bus: "6호차", room: "311(2)", checked: false, busChecked: false },
+                { id: 116, name: "이혜진", role: "목자", grade: "인솔", group: "목자", bus: "6호차", room: "313(2)", checked: false, busChecked: false },
+                { id: 117, name: "권민희", role: "목자", grade: "인솔", group: "목자", bus: "6호차", room: "313(2)", checked: false, busChecked: false },
+                { id: 118, name: "김성연", role: "목자", grade: "인솔", group: "목자", bus: "6호차", room: "311(2)", checked: false, busChecked: false },
+                { id: 119, name: "조현호", role: "목자", grade: "인솔", group: "목자", bus: "자차", room: "204(2)", checked: false, busChecked: false },
+                { id: 120, name: "김남휘", role: "목자", grade: "인솔", group: "목자", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
+                { id: 121, name: "강건호", role: "목자", grade: "인솔", group: "목자", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
+                { id: 122, name: "안소연", role: "봉사자", grade: "인솔", group: "봉사자", bus: "자차", room: "309(2)", checked: false, busChecked: false }
             ],
             buses: [
                 { id: "5호차", driver: "기사님 (연락처 입력)", leader: "5호차 담당 교사", number: "5호차" },
                 { id: "6호차", driver: "기사님 (연락처 입력)", leader: "6호차 담당 교사", number: "6호차" },
-                { id: "후발대", driver: "기사님 (연락처 입력)", leader: "후발대 담당 교사", number: "후발대 차량" }
+                { id: "후발대", driver: "기사님 (연락처 입력)", leader: "후발대 담당 교사", number: "후발대 차량" },
+                { id: "자차", driver: "개인 차량", leader: "자차 이동", number: "자차" }
             ],
             schedule: [
                 {
@@ -396,26 +423,27 @@
                 }
             ],
             rooms: [
-                { id: "301(1)", type: "학생방", capacity: 20 },
-                { id: "310(1)", type: "학생방", capacity: 20 },
-                { id: "302(1)", type: "학생방", capacity: 20 },
-                { id: "214(1)", type: "학생방", capacity: 20 },
-                { id: "308(2)", type: "학생방", capacity: 20 },
-                { id: "215(1)", type: "학생방", capacity: 20 },
-                { id: "316(1)", type: "학생방", capacity: 20 },
-                { id: "204(2)", type: "학생방", capacity: 20 },
-                { id: "309(2)", type: "학생방", capacity: 20 },
-                { id: "310(2)", type: "학생방", capacity: 20 },
-                { id: "205(2)", type: "학생방", capacity: 20 },
-                { id: "311(2)", type: "학생방", capacity: 20 },
-                { id: "312(2)", type: "학생방", capacity: 20 },
-                { id: "309(1)", type: "학생방", capacity: 20 }
+                { id: "301(1)", type: "학생/목자방", capacity: 20 },
+                { id: "310(1)", type: "학생/목자방", capacity: 20 },
+                { id: "302(1)", type: "학생/목자방", capacity: 20 },
+                { id: "214(1)", type: "학생/목자방", capacity: 20 },
+                { id: "308(2)", type: "학생/목자방", capacity: 20 },
+                { id: "215(1)", type: "학생/목자방", capacity: 20 },
+                { id: "316(1)", type: "학생/목자방", capacity: 20 },
+                { id: "204(2)", type: "학생/목자방", capacity: 20 },
+                { id: "309(2)", type: "학생/목자방", capacity: 20 },
+                { id: "310(2)", type: "학생/목자방", capacity: 20 },
+                { id: "205(2)", type: "학생/목자방", capacity: 20 },
+                { id: "311(2)", type: "학생/목자방", capacity: 20 },
+                { id: "312(2)", type: "학생/목자방", capacity: 20 },
+                { id: "309(1)", type: "학생/목자방", capacity: 20 },
+                { id: "313(2)", type: "목자방", capacity: 20 }
             ]
         };
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_permanent_v4');
+                const saved = localStorage.getItem('retreatAppData_permanent_v6');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -626,10 +654,21 @@
             `;
         }
 
-        /* 후발대 친구들(김태빈, 최승현, 이하빈, 김선율)은 은은한 회색 바탕색 적용 함수 */
+        /* 후발대 친구들(김태빈, 최승현, 이하빈, 김선율)은 회색 바탕색 적용 */
         function getCardBgClass(m) {
             const isLate = ["김태빈", "최승현", "이하빈", "김선율"].includes(m.name);
             if (m.checked) {
+                return 'bg-gradient-to-b from-emerald-50 to-emerald-100/70 border-emerald-400 border-b-3 border-b-emerald-600 text-emerald-950';
+            }
+            if (isLate) {
+                return 'bg-slate-200 border-slate-300 border-b-3 border-b-slate-400 text-slate-700';
+            }
+            return 'bg-gradient-to-b from-white to-slate-50 border-slate-200 border-b-3 border-b-slate-300 text-slate-800 hover:bg-slate-50';
+        }
+
+        function getBusCardBgClass(m) {
+            const isLate = ["김태빈", "최승현", "이하빈", "김선율"].includes(m.name);
+            if (m.busChecked) {
                 return 'bg-gradient-to-b from-emerald-50 to-emerald-100/70 border-emerald-400 border-b-3 border-b-emerald-600 text-emerald-950';
             }
             if (isLate) {
@@ -644,7 +683,8 @@
             const filteredMembers = appData.members.filter(m => 
                 m.name.includes(memberSearchKeyword) || 
                 (m.group && m.group.includes(memberSearchKeyword)) ||
-                (m.grade && m.grade.includes(memberSearchKeyword))
+                (m.grade && m.grade.includes(memberSearchKeyword)) ||
+                (m.role && m.role.includes(memberSearchKeyword))
             );
 
             main.innerHTML = `
@@ -657,24 +697,25 @@
 
                 <div class="relative mb-2.5">
                     <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
-                    <input type="text" id="member-search" value="${memberSearchKeyword}" placeholder="이름, 반, 조 검색..." oninput="onSearchMember(this.value)" class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs sm:text-sm focus:outline-none focus:border-blue-500 shadow-xs">
+                    <input type="text" id="member-search" value="${memberSearchKeyword}" placeholder="이름, 반, 직분(목자) 검색..." oninput="onSearchMember(this.value)" class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs sm:text-sm focus:outline-none focus:border-blue-500 shadow-xs">
                     ${memberSearchKeyword ? `<button onclick="onSearchMember('')" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>` : ''}
                 </div>
 
                 <div class="flex justify-between items-center mb-2 px-1">
                     <span class="text-xs sm:text-sm text-slate-600 font-bold">참석자 (<span class="text-blue-600 font-black">${filteredMembers.length}</span>명)</span>
-                    <span class="text-[11px] text-slate-400">체크박스를 누르면 체크됩니다</span>
+                    <span class="text-[11px] text-slate-400">카드를 누르면 체크/해제됩니다</span>
                 </div>
 
                 <div class="space-y-1.5 pr-0.5">
                     ${filteredMembers.map(m => `
-                        <div class="px-3 py-2.5 rounded-xl border-t border-x flex items-center justify-between transition-all shadow-2xs ${getCardBgClass(m)}">
+                        <div id="member-card-${m.id}" onclick="toggleMemberCheck(${m.id})" 
+                            class="px-3 py-2.5 rounded-xl border-t border-x flex items-center justify-between cursor-pointer transition-all shadow-2xs ${getCardBgClass(m)}">
                             
-                            <div class="flex items-center space-x-2.5 min-w-0 flex-1 cursor-pointer" onclick="toggleMemberCheck(${m.id})">
-                                <div class="w-7 h-7 rounded-lg font-black text-xs sm:text-sm flex items-center justify-center shrink-0 transition-colors ${m.checked ? 'bg-emerald-500 text-white shadow-xs' : 'bg-slate-100 text-slate-400 border border-slate-200'}">
+                            <div class="flex items-center space-x-2.5 min-w-0 flex-1">
+                                <div id="member-check-box-${m.id}" class="w-7 h-7 rounded-lg font-black text-xs sm:text-sm flex items-center justify-center shrink-0 transition-colors ${m.checked ? 'bg-emerald-500 text-white shadow-xs' : 'bg-slate-100 text-slate-400 border border-slate-200'}">
                                     ${m.checked ? '✓' : 'ㅡ'}
                                 </div>
-                                <span class="px-2 py-0.5 rounded text-xs font-extrabold shrink-0 ${m.role === '교사' ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-slate-100 text-slate-700 border border-slate-200'}">${m.group || m.grade}</span>
+                                <span class="px-2 py-0.5 rounded text-xs font-extrabold shrink-0 ${m.role === '목자' ? 'bg-amber-100 text-amber-800 border border-amber-200' : m.role === '봉사자' ? 'bg-purple-100 text-purple-800 border border-purple-200' : 'bg-slate-100 text-slate-700 border border-slate-200'}">${m.group || m.grade}</span>
                                 <span class="font-black text-base sm:text-lg tracking-tight truncate ${m.checked ? 'text-emerald-950' : 'text-slate-900'}">${m.name}</span>
                                 <span class="text-xs ${m.checked ? 'text-emerald-700' : 'text-slate-400'} font-bold shrink-0">(${m.role})</span>
                             </div>
@@ -697,7 +738,14 @@
             if (m) {
                 m.checked = !m.checked;
                 window.saveDataAtomic();
-                navigateTo('members', true);
+                
+                const card = document.getElementById(`member-card-${id}`);
+                const checkBox = document.getElementById(`member-check-box-${id}`);
+                if (card && checkBox) {
+                    card.className = `px-3 py-2.5 rounded-xl border-t border-x flex items-center justify-between cursor-pointer transition-all shadow-2xs ${getCardBgClass(m)}`;
+                    checkBox.className = `w-7 h-7 rounded-lg font-black text-xs sm:text-sm flex items-center justify-center shrink-0 transition-colors ${m.checked ? 'bg-emerald-500 text-white shadow-xs' : 'bg-slate-100 text-slate-400 border border-slate-200'}`;
+                    checkBox.textContent = m.checked ? '✓' : 'ㅡ';
+                }
             }
         }
 
@@ -705,7 +753,7 @@
             if (confirm("전체 참석자의 명단 체크 상태를 초기화하시겠습니까?")) {
                 appData.members.forEach(m => m.checked = false);
                 window.saveDataAtomic();
-                navigateTo('members', true);
+                renderMembers();
             }
         }
 
@@ -719,6 +767,7 @@
             const b1 = appData.members.filter(m => m.bus === '5호차');
             const b2 = appData.members.filter(m => m.bus === '6호차');
             const b3 = appData.members.filter(m => m.bus === '후발대');
+            const b4 = appData.members.filter(m => m.bus === '자차');
 
             let filteredList = currentBusTab === '전체' ? appData.members : appData.members.filter(m => m.bus === currentBusTab);
             
@@ -756,17 +805,20 @@
                     ${busSearchKeyword ? `<button onclick="onSearchBus('')" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>` : ''}
                 </div>
 
-                <div class="grid grid-cols-4 gap-1 mb-2.5">
-                    <button onclick="selectBusTab('5호차')" class="py-2 px-0.5 text-xs sm:text-sm font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '5호차' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
+                <div class="grid grid-cols-5 gap-1 mb-2.5">
+                    <button onclick="selectBusTab('5호차')" class="py-2 px-0.5 text-[11px] sm:text-xs font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '5호차' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
                         5호차 (${b1.length})
                     </button>
-                    <button onclick="selectBusTab('6호차')" class="py-2 px-0.5 text-xs sm:text-sm font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '6호차' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
+                    <button onclick="selectBusTab('6호차')" class="py-2 px-0.5 text-[11px] sm:text-xs font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '6호차' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
                         6호차 (${b2.length})
                     </button>
-                    <button onclick="selectBusTab('후발대')" class="py-2 px-0.5 text-xs sm:text-sm font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '후발대' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
+                    <button onclick="selectBusTab('후발대')" class="py-2 px-0.5 text-[11px] sm:text-xs font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '후발대' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
                         후발대 (${b3.length})
                     </button>
-                    <button onclick="selectBusTab('전체')" class="py-2 px-0.5 text-xs sm:text-sm font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '전체' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
+                    <button onclick="selectBusTab('자차')" class="py-2 px-0.5 text-[11px] sm:text-xs font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '자차' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
+                        자차 (${b4.length})
+                    </button>
+                    <button onclick="selectBusTab('전체')" class="py-2 px-0.5 text-[11px] sm:text-xs font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '전체' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
                         전체 (${totalMembers})
                     </button>
                 </div>
@@ -779,13 +831,13 @@
 
                 <div class="grid grid-cols-3 gap-1.5 mb-3">
                     ${filteredList.map((m, idx) => `
-                        <div onclick="toggleBusCheck(${m.id})" 
-                            class="px-2.5 py-3 rounded-xl border-t border-x flex items-center justify-between transition cursor-pointer active:translate-y-0.5 shadow-2xs min-w-0 ${m.busChecked ? 'bg-gradient-to-b from-emerald-50 to-emerald-100/70 border-emerald-400 border-b-3 border-b-emerald-600 text-emerald-950' : 'bg-gradient-to-b from-white to-slate-50 border-slate-200 border-b-3 border-b-slate-300 text-slate-800 hover:bg-slate-50'}">
+                        <div id="bus-card-${m.id}" onclick="toggleBusCheck(${m.id})" 
+                            class="px-2.5 py-3 rounded-xl border-t border-x flex items-center justify-between transition cursor-pointer active:translate-y-0.5 shadow-2xs min-w-0 ${getBusCardBgClass(m)}">
                             <div class="flex items-center space-x-1 min-w-0 flex-1 overflow-hidden">
                                 <span class="text-xs text-slate-400 shrink-0 font-medium mr-0.5">${idx + 1}</span>
                                 <span class="text-base sm:text-lg font-black tracking-tight whitespace-nowrap leading-none truncate">${m.name}</span>
                             </div>
-                            <div class="w-5 h-5 rounded flex items-center justify-center text-xs shrink-0 font-black ml-1 ${m.busChecked ? 'bg-emerald-500 text-white shadow-xs' : 'border border-slate-300 bg-slate-50'}">
+                            <div id="bus-check-icon-${m.id}" class="w-5 h-5 rounded flex items-center justify-center text-xs shrink-0 font-black ml-1 ${m.busChecked ? 'bg-emerald-500 text-white shadow-xs' : 'border border-slate-300 bg-slate-50'}">
                                 ${m.busChecked ? '✓' : ''}
                             </div>
                         </div>
@@ -813,7 +865,14 @@
                 member.busChecked = !member.busChecked;
                 lastSelectedName = member.name + (member.busChecked ? ' (승차 완료)' : ' (승차 취소)');
                 window.saveDataAtomic();
-                navigateTo('bus', true);
+
+                const card = document.getElementById(`bus-card-${memberId}`);
+                const icon = document.getElementById(`bus-check-icon-${memberId}`);
+                if (card && icon) {
+                    card.className = `px-2.5 py-3 rounded-xl border-t border-x flex items-center justify-between transition cursor-pointer active:translate-y-0.5 shadow-2xs min-w-0 ${getBusCardBgClass(member)}`;
+                    icon.className = `w-5 h-5 rounded flex items-center justify-center text-xs shrink-0 font-black ml-1 ${member.busChecked ? 'bg-emerald-500 text-white shadow-xs' : 'border border-slate-300 bg-slate-50'}`;
+                    icon.textContent = member.busChecked ? '✓' : '';
+                }
             }
         }
 
@@ -827,7 +886,7 @@
                 });
                 lastSelectedName = '탑승 체크 초기화됨';
                 window.saveDataAtomic();
-                navigateTo('bus', true);
+                renderBus();
             }
         }
 
@@ -1121,8 +1180,8 @@
                 if (m) {
                     document.getElementById('m-form-name').value = m.name || '';
                     document.getElementById('m-form-role').value = m.role || '학생';
-                    document.getElementById('m-form-grade').value = m.grade || '1-1';
-                    document.getElementById('m-form-group').value = m.group || '1-1';
+                    document.getElementById('m-form-grade').value = m.grade || '중1-1';
+                    document.getElementById('m-form-group').value = m.group || '중1-1';
                     document.getElementById('m-form-bus').value = m.bus || '5호차';
                     document.getElementById('m-form-room').value = m.room || '301(1)';
                 }
@@ -1130,8 +1189,8 @@
                 if (titleEl) titleEl.textContent = "명단 추가";
                 document.getElementById('m-form-name').value = '';
                 document.getElementById('m-form-role').value = '학생';
-                document.getElementById('m-form-grade').value = '1-1';
-                document.getElementById('m-form-group').value = '1-1';
+                document.getElementById('m-form-grade').value = '중1-1';
+                document.getElementById('m-form-group').value = '중1-1';
                 document.getElementById('m-form-bus').value = '5호차';
                 document.getElementById('m-form-room').value = '301(1)';
             }
@@ -1146,7 +1205,7 @@
                 return;
             }
             const role = document.getElementById('m-form-role').value;
-            const grade = document.getElementById('m-form-grade').value.trim() || '1-1';
+            const grade = document.getElementById('m-form-grade').value.trim() || '중1-1';
             const group = document.getElementById('m-form-group').value.trim() || grade;
             const bus = document.getElementById('m-form-bus').value;
             const room = document.getElementById('m-form-room').value.trim() || '301(1)';
@@ -1180,7 +1239,7 @@
         }
 
         function deleteMember(id) {
-            if (confirm("정말 이 학생/교사 항목을 삭제하시겠습니까?")) {
+            if (confirm("정말 이 학생/목자 항목을 삭제하시겠습니까?")) {
                 appData.members = appData.members.filter(m => m.id !== id);
                 window.saveDataAtomic();
                 switchAdminTab('members');
@@ -1210,7 +1269,7 @@
         });
     </script>
 
-    <!-- Firebase Realtime Synchronization Module (체크 상태 독립 유지 및 영구 보존) -->
+    <!-- Firebase Realtime Synchronization Module -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -1231,7 +1290,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'jiguchon_permanent_master_v4');
+        const docRef = doc(db, 'retreatData', 'jiguchon_permanent_master_v7');
 
         const initAuth = async () => {
             try {
@@ -1251,7 +1310,6 @@
                     if (serverData.posts && serverData.posts.length > 0) {
                         appData.posts = serverData.posts;
                     }
-                    // 서버의 명단 체크 상태를 덮어씌워지지 않게 이름 기준으로 병합 유지
                     if (serverData.members && serverData.members.length > 0) {
                         appData.members = appData.members.map(localM => {
                             const found = serverData.members.find(sM => sM.name === localM.name);
@@ -1262,7 +1320,7 @@
                         });
                     }
                 }
-                localStorage.setItem('retreatAppData_permanent_v4', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_permanent_v7', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1283,7 +1341,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_permanent_v4', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_permanent_v7', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1304,7 +1362,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_permanent_v4', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_permanent_v7', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1325,7 +1383,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_permanent_v4', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_permanent_v7', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
@@ -1357,7 +1415,6 @@
                         if (remoteData.posts && remoteData.posts.length > 0) {
                             appData.posts = remoteData.posts;
                         }
-                        // 원격 서버의 체크 상태를 현재 명단에 안전하게 반영 (리렌더링 시 체크 초기화 방지)
                         if (remoteData.members && remoteData.members.length > 0) {
                             appData.members = appData.members.map(localM => {
                                 const found = remoteData.members.find(sM => sM.name === localM.name);
@@ -1376,10 +1433,6 @@
                                 if (document.getElementById('post-pass-input')) document.getElementById('post-pass-input').value = activePass;
                                 if (document.getElementById('post-content-input')) document.getElementById('post-content-input').value = activeContent;
                             }
-                        } else {
-                            // 현재 보고 있는 화면을 유지하면서 데이터만 부드럽게 갱신
-                            if (currentView === 'members') renderMembers();
-                            else if (currentView === 'bus') renderBus();
                         }
                     } catch (err) {
                         console.error("Firebase Sync Parse Error:", err);
