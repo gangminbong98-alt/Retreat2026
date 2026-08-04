@@ -440,10 +440,9 @@
             ]
         };
 
-        // 앱 실행 시 로컬 스토리지 데이터 불러오기
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_shared_v1');
+                const saved = localStorage.getItem('retreatAppData_shared_v2');
                 if (saved) {
                     const parsed = JSON.parse(saved);
                     if (parsed.members) {
@@ -474,8 +473,6 @@
         let currentView = 'home';
         let currentBusTab = '5호차';
         let currentScheduleDay = 0;
-        let memberSearchKeyword = '';
-        let busSearchKeyword = '';
         let lastSelectedName = '';
         let editingMemberId = null;
         let currentAdminTab = 'members';
@@ -695,15 +692,10 @@
             return 'bg-gradient-to-b from-white to-slate-50 border-slate-200 border-b-3 border-b-slate-300 text-slate-800 hover:bg-slate-50';
         }
 
-        /* ---------------- MEMBERS VIEW ---------------- */
+        /* ---------------- MEMBERS VIEW (이름 찾기 바 삭제 완료) ---------------- */
         function renderMembers() {
             const main = document.getElementById('main-content');
-            const filteredMembers = appData.members.filter(m => 
-                m.name.includes(memberSearchKeyword) || 
-                (m.group && m.group.includes(memberSearchKeyword)) ||
-                (m.grade && m.grade.includes(memberSearchKeyword)) ||
-                (m.role && m.role.includes(memberSearchKeyword))
-            );
+            const members = appData.members;
 
             main.innerHTML = `
                 <div class="mb-2.5">
@@ -713,19 +705,13 @@
                     </button>
                 </div>
 
-                <div class="relative mb-2.5">
-                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
-                    <input type="text" id="member-search" value="${memberSearchKeyword}" placeholder="이름, 반, 직분(목자) 검색..." oninput="onSearchMember(this.value)" class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs sm:text-sm focus:outline-none focus:border-blue-500 shadow-xs">
-                    ${memberSearchKeyword ? `<button onclick="onSearchMember('')" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>` : ''}
-                </div>
-
                 <div class="flex justify-between items-center mb-2 px-1">
-                    <span class="text-xs sm:text-sm text-slate-600 font-bold">참석자 (<span class="text-blue-600 font-black">${filteredMembers.length}</span>명)</span>
+                    <span class="text-xs sm:text-sm text-slate-600 font-bold">참석자 (<span class="text-blue-600 font-black">${members.length}</span>명)</span>
                     <span class="text-[11px] text-slate-400">카드를 누르면 체크/해제됩니다</span>
                 </div>
 
                 <div class="space-y-1.5 pr-0.5">
-                    ${filteredMembers.map(m => `
+                    ${members.map(m => `
                         <div id="member-card-${m.id}" onclick="toggleMemberCheck(${m.id})" 
                             class="px-3 py-2.5 rounded-xl border-t border-x flex items-center justify-between cursor-pointer transition-all shadow-2xs ${getCardBgClass(m)}">
                             
@@ -744,15 +730,8 @@
                             </div>
                         </div>
                     `).join('')}
-                    ${filteredMembers.length === 0 ? `<div class="py-10 text-center text-xs text-slate-400">검색 결과가 없습니다.</div>` : ''}
                 </div>
             `;
-        }
-
-        function onSearchMember(val) { 
-            memberSearchKeyword = val; 
-            renderMembers(); 
-            if (window.lucide) lucide.createIcons(); 
         }
 
         function toggleMemberCheck(id) {
@@ -779,23 +758,16 @@
             }
         }
 
-        /* ---------------- BUS VIEW ---------------- */
+        /* ---------------- BUS VIEW (이름 찾기 바 삭제 완료) ---------------- */
         function renderBus() {
             const main = document.getElementById('main-content');
             
             const totalMembers = appData.members.length;
-            const totalChecked = appData.members.filter(m => m.busChecked).length;
-
             const b1 = appData.members.filter(m => m.bus === '5호차');
             const b2 = appData.members.filter(m => m.bus === '6호차');
             const b3 = appData.members.filter(m => m.bus === '후발대');
 
             let filteredList = currentBusTab === '전체' ? appData.members : appData.members.filter(m => m.bus === currentBusTab);
-            
-            if (busSearchKeyword.trim()) {
-                filteredList = filteredList.filter(m => m.name.includes(busSearchKeyword) || (m.group && m.group.includes(busSearchKeyword)));
-            }
-
             const currentCheckedCount = filteredList.filter(m => m.busChecked).length;
 
             main.innerHTML = `
@@ -818,12 +790,6 @@
                         <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
                         <span>현재 호차 탑승 체크 초기화</span>
                     </button>
-                </div>
-
-                <div class="relative mb-2.5">
-                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
-                    <input type="text" value="${busSearchKeyword}" oninput="onSearchBus(this.value)" placeholder="이름으로 찾기" class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs sm:text-sm focus:outline-none focus:border-blue-500 shadow-xs">
-                    ${busSearchKeyword ? `<button onclick="onSearchBus('')" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>` : ''}
                 </div>
 
                 <div class="grid grid-cols-4 gap-1 mb-2.5">
@@ -860,7 +826,6 @@
                             </div>
                         </div>
                     `).join('')}
-                    ${filteredList.length === 0 ? `<div class="col-span-3 py-10 text-center text-xs text-slate-400">해당하는 참석자가 없습니다.</div>` : ''}
                 </div>
 
                 <div class="bg-slate-50 border border-slate-200 border-b-2 border-b-slate-300 rounded-2xl p-3 space-y-2 shadow-xs">
@@ -872,12 +837,6 @@
                     </button>
                 </div>
             `;
-        }
-
-        function onSearchBus(val) { 
-            busSearchKeyword = val; 
-            renderBus(); 
-            if (window.lucide) lucide.createIcons(); 
         }
 
         function selectBusTab(busNo) { 
@@ -1309,7 +1268,7 @@
         });
     </script>
 
-    <!-- Firebase Realtime Synchronization Module (모든 기기 간 체크 상태 완벽 동기화 및 유지) -->
+    <!-- Firebase Realtime Synchronization Module -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -1344,7 +1303,7 @@
 
         window.saveDataAtomic = async function() {
             try {
-                localStorage.setItem('retreatAppData_shared_v1', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_shared_v2', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1365,7 +1324,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_shared_v1', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_shared_v2', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1386,7 +1345,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_shared_v1', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_shared_v2', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1407,7 +1366,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_shared_v1', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_shared_v2', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
@@ -1420,7 +1379,6 @@
             }
         };
 
-        // 실시간 동기화로 다른 선생님의 체크 내용과 게시글이 즉시 반영되도록 설정
         onSnapshot(docRef, (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.data();
@@ -1441,7 +1399,6 @@
                             appData.posts = remoteData.posts;
                         }
 
-                        // 다른 기기(선생님)에서 체크한 내용을 실시간으로 병합 반영
                         if (remoteData.members && remoteData.members.length > 0) {
                             appData.members = appData.members.map(localM => {
                                 const found = remoteData.members.find(sM => sM.name === localM.name);
@@ -1456,7 +1413,6 @@
                             });
                         }
 
-                        // 현재 보고 있는 화면이 명단이나 버스인 경우, 새로고침 없이 화면의 체크 표시만 실시간 갱신
                         if (currentView === 'members') {
                             renderMembers();
                         } else if (currentView === 'bus') {
