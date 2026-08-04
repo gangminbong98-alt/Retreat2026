@@ -425,7 +425,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v25');
+                const saved = localStorage.getItem('retreatAppData_v26');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -716,7 +716,7 @@
             }
         }
 
-        /* ---------------- BUS VIEW (버스 체크와 명단 체크 완전 분리) ---------------- */
+        /* ---------------- BUS VIEW ---------------- */
         function renderBus() {
             const main = document.getElementById('main-content');
             
@@ -931,7 +931,7 @@
             `;
         }
 
-        /* ---------------- BOARD VIEW ---------------- */
+        /* ---------------- BOARD VIEW (파이어베이스 글 데이터 완벽 보존 처리) ---------------- */
         function renderBoard() {
             const main = document.getElementById('main-content');
             const posts = appData.posts || [];
@@ -1217,7 +1217,7 @@
         });
     </script>
 
-    <!-- Firebase Realtime Synchronization Module -->
+    <!-- Firebase Realtime Synchronization Module (서버 글 데이터 병합 보존 로직 적용) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -1238,7 +1238,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'main_v25');
+        const docRef = doc(db, 'retreatData', 'main_v26');
 
         const initAuth = async () => {
             try {
@@ -1255,9 +1255,12 @@
                 const snap = await getDoc(docRef);
                 if (snap.exists() && snap.data().payload) {
                     const serverData = JSON.parse(snap.data().payload);
-                    appData.posts = serverData.posts || appData.posts;
+                    // 서버에 이미 작성된 게시글이 있다면 최우선으로 보존 병합
+                    if (serverData.posts && serverData.posts.length > 0) {
+                        appData.posts = serverData.posts;
+                    }
                 }
-                localStorage.setItem('retreatAppData_v25', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v26', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1278,7 +1281,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_v25', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v26', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1299,7 +1302,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_v25', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v26', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1320,7 +1323,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_v25', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_v26', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
@@ -1349,7 +1352,12 @@
                             document.activeElement.id === 'post-content-input'
                         );
 
-                        appData = remoteData;
+                        // 서버의 최신 글 목록이 비어있지 않다면 유지
+                        if (remoteData.posts && remoteData.posts.length > 0) {
+                            appData.posts = remoteData.posts;
+                        }
+                        appData.members = remoteData.members || appData.members;
+                        appData.buses = remoteData.buses || appData.buses;
                         
                         if (currentView === 'board') {
                             renderBoard();
