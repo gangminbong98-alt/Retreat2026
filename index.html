@@ -211,7 +211,7 @@
                         </div>
                         <div>
                             <label class="block text-slate-500 mb-1">숙소</label>
-                            <input type="text" id="m-form-room" placeholder="309(2)" class="w-full border rounded-lg px-2.5 py-1.5">
+                            <input type="text" id="m-form-room" placeholder="301(1)" class="w-full border rounded-lg px-2.5 py-1.5">
                         </div>
                     </div>
                 </div>
@@ -345,12 +345,12 @@
                 { id: 65, name: "김율기", role: "학생", grade: "중3-8", group: "중3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
                 { id: 66, name: "박주원", role: "학생", grade: "중3-8", group: "중3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
                 { id: 67, name: "박준서", role: "학생", grade: "중3-8", group: "중3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
-                { id: 68, name: "박하민", role: "학생", grade: "중3-8", group: "3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
+                { id: 68, name: "박하민", role: "학생", grade: "중3-8", group: "중3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
                 { id: 69, name: "윤상호", role: "학생", grade: "중3-8", group: "중3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
                 { id: 70, name: "정시원", role: "학생", grade: "중3-8", group: "중3-8", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
                 { id: 71, name: "나하진", role: "학생", grade: "중3-9", group: "중3-9", bus: "6호차", room: "309(1)", checked: false, busChecked: false },
 
-                /* 인솔목자 및 봉사자 명단 (추가 23명, 1호차 미포함) */
+                /* 인솔목자 및 봉사자 명단 (22명) */
                 { id: 101, name: "김옥", role: "목자", grade: "인솔", group: "목자", bus: "5호차", room: "313(2)", checked: false, busChecked: false },
                 { id: 102, name: "김민경", role: "목자", grade: "인솔", group: "목자", bus: "5호차", room: "313(2)", checked: false, busChecked: false },
                 { id: 103, name: "한근식", role: "목자", grade: "인솔", group: "목자", bus: "5호차", room: "301(1)", checked: false, busChecked: false },
@@ -423,27 +423,27 @@
                 }
             ],
             rooms: [
-                { id: "301(1)", type: "학생/목자방", capacity: 20 },
-                { id: "310(1)", type: "학생/목자방", capacity: 20 },
-                { id: "302(1)", type: "학생/목자방", capacity: 20 },
-                { id: "214(1)", type: "학생/목자방", capacity: 20 },
-                { id: "308(2)", type: "학생/목자방", capacity: 20 },
-                { id: "215(1)", type: "학생/목자방", capacity: 20 },
-                { id: "316(1)", type: "학생/목자방", capacity: 20 },
-                { id: "204(2)", type: "학생/목자방", capacity: 20 },
-                { id: "309(2)", type: "학생/목자방", capacity: 20 },
-                { id: "310(2)", type: "학생/목자방", capacity: 20 },
-                { id: "205(2)", type: "학생/목자방", capacity: 20 },
-                { id: "311(2)", type: "학생/목자방", capacity: 20 },
-                { id: "312(2)", type: "학생/목자방", capacity: 20 },
-                { id: "309(1)", type: "학생/목자방", capacity: 20 },
+                { id: "301(1)", type: "학생방", capacity: 20 },
+                { id: "310(1)", type: "학생방", capacity: 20 },
+                { id: "302(1)", type: "학생방", capacity: 20 },
+                { id: "214(1)", type: "학생방", capacity: 20 },
+                { id: "308(2)", type: "학생방", capacity: 20 },
+                { id: "215(1)", type: "학생방", capacity: 20 },
+                { id: "316(1)", type: "학생방", capacity: 20 },
+                { id: "204(2)", type: "학생방", capacity: 20 },
+                { id: "309(2)", type: "학생방", capacity: 20 },
+                { id: "310(2)", type: "학생방", capacity: 20 },
+                { id: "205(2)", type: "학생방", capacity: 20 },
+                { id: "311(2)", type: "학생방", capacity: 20 },
+                { id: "312(2)", type: "학생방", capacity: 20 },
+                { id: "309(1)", type: "학생방", capacity: 20 },
                 { id: "313(2)", type: "목자방", capacity: 20 }
             ]
         };
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_permanent_v6');
+                const saved = localStorage.getItem('retreatAppData_absolute_master_v10');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -654,7 +654,6 @@
             `;
         }
 
-        /* 후발대 친구들(김태빈, 최승현, 이하빈, 김선율)은 회색 바탕색 적용 */
         function getCardBgClass(m) {
             const isLate = ["김태빈", "최승현", "이하빈", "김선율"].includes(m.name);
             if (m.checked) {
@@ -731,7 +730,11 @@
             `;
         }
 
-        function onSearchMember(val) { memberSearchKeyword = val; renderMembers(); if (window.lucide) lucide.createIcons(); }
+        function onSearchMember(val) { 
+            memberSearchKeyword = val; 
+            renderMembers(); 
+            if (window.lucide) lucide.createIcons(); 
+        }
 
         function toggleMemberCheck(id) {
             const m = appData.members.find(x => x.id === id);
@@ -788,7 +791,7 @@
                         </span>
                     </div>
                     <div class="text-xs sm:text-sm text-blue-100 font-medium">
-                        승차 완료: <strong class="text-amber-300 font-black text-sm sm:text-base">${totalChecked}</strong> / ${totalMembers} 명
+                        승차 완료: <strong class="text-amber-300 font-black text-sm sm:text-base">${currentCheckedCount}</strong> / ${filteredList.length} 명
                     </div>
                 </div>
 
@@ -805,20 +808,17 @@
                     ${busSearchKeyword ? `<button onclick="onSearchBus('')" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>` : ''}
                 </div>
 
-                <div class="grid grid-cols-5 gap-1 mb-2.5">
-                    <button onclick="selectBusTab('5호차')" class="py-2 px-0.5 text-[11px] sm:text-xs font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '5호차' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
+                <div class="grid grid-cols-4 gap-1 mb-2.5">
+                    <button onclick="selectBusTab('5호차')" class="py-2 px-0.5 text-xs sm:text-sm font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '5호차' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
                         5호차 (${b1.length})
                     </button>
-                    <button onclick="selectBusTab('6호차')" class="py-2 px-0.5 text-[11px] sm:text-xs font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '6호차' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
+                    <button onclick="selectBusTab('6호차')" class="py-2 px-0.5 text-xs sm:text-sm font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '6호차' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
                         6호차 (${b2.length})
                     </button>
-                    <button onclick="selectBusTab('후발대')" class="py-2 px-0.5 text-[11px] sm:text-xs font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '후발대' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
+                    <button onclick="selectBusTab('후발대')" class="py-2 px-0.5 text-xs sm:text-sm font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '후발대' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
                         후발대 (${b3.length})
                     </button>
-                    <button onclick="selectBusTab('자차')" class="py-2 px-0.5 text-[11px] sm:text-xs font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '자차' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
-                        자차 (${b4.length})
-                    </button>
-                    <button onclick="selectBusTab('전체')" class="py-2 px-0.5 text-[11px] sm:text-xs font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '전체' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
+                    <button onclick="selectBusTab('전체')" class="py-2 px-0.5 text-xs sm:text-sm font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '전체' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
                         전체 (${totalMembers})
                     </button>
                 </div>
@@ -856,8 +856,17 @@
             `;
         }
 
-        function onSearchBus(val) { busSearchKeyword = val; renderBus(); if (window.lucide) lucide.createIcons(); }
-        function selectBusTab(busNo) { currentBusTab = busNo; renderBus(); if (window.lucide) lucide.createIcons(); }
+        function onSearchBus(val) { 
+            busSearchKeyword = val; 
+            renderBus(); 
+            if (window.lucide) lucide.createIcons(); 
+        }
+
+        function selectBusTab(busNo) { 
+            currentBusTab = busNo; 
+            renderBus(); 
+            if (window.lucide) lucide.createIcons(); 
+        }
 
         function toggleBusCheck(memberId) {
             const member = appData.members.find(m => m.id === memberId);
@@ -959,14 +968,23 @@
 
         function selectScheduleDay(dayIdx) { currentScheduleDay = dayIdx; renderSchedule(); if (window.lucide) lucide.createIcons(); }
 
-        /* ---------------- LODGING VIEW ---------------- */
+        /* ---------------- LODGING VIEW (각 방 맨앞에 목자 이름 굵게 표시) ---------------- */
         function renderLodging() {
             const main = document.getElementById('main-content');
             main.innerHTML = `
                 <h3 class="text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-3 px-1">방 배정 및 숙소 안내</h3>
                 <div class="space-y-3">
                     ${appData.rooms.map(room => {
-                        const membersInRoom = appData.members.filter(m => m.room === room.id);
+                        // 해당 방에 배정된 멤버들 필터링
+                        let membersInRoom = appData.members.filter(m => m.room === room.id);
+                        
+                        // 목자/봉사자를 맨 앞으로 정렬하고 학생들을 뒤로 정렬
+                        membersInRoom.sort((a, b) => {
+                            if (a.role !== '학생' && b.role === '학생') return -1;
+                            if (a.role === '학생' && b.role !== '학생') return 1;
+                            return 0;
+                        });
+
                         return `
                             <div class="bg-white p-3.5 rounded-2xl border border-slate-100 border-b-2 border-b-slate-200 shadow-xs">
                                 <div class="flex justify-between items-center border-b pb-2 mb-2.5">
@@ -974,7 +992,13 @@
                                     <span class="text-xs sm:text-sm text-blue-600 font-extrabold bg-blue-50 px-2.5 py-0.5 rounded-lg border border-blue-100">${membersInRoom.length}명 배정</span>
                                 </div>
                                 <div class="grid grid-cols-2 gap-1.5">
-                                    ${membersInRoom.map(m => `<div class="bg-slate-50 p-2 rounded-xl text-xs sm:text-sm font-extrabold text-slate-900 border border-slate-200 flex justify-between items-center">${m.name} <span class="text-blue-600 text-xs font-bold">(${m.group || m.grade})</span></div>`).join('')}
+                                    ${membersInRoom.map(m => {
+                                        const isLeader = m.role === '목자' || m.role === '봉사자';
+                                        return `<div class="bg-slate-50 p-2 rounded-xl text-xs sm:text-sm ${isLeader ? 'font-black text-indigo-700 bg-indigo-50/60 border border-indigo-100' : 'font-extrabold text-slate-900 border border-slate-200'} flex justify-between items-center">
+                                            <span>${isLeader ? '<strong>' + m.name + ' (' + m.role + ')</strong>' : m.name}</span>
+                                            <span class="text-blue-600 text-xs font-bold">(${m.group || m.grade})</span>
+                                        </div>`;
+                                    }).join('')}
                                 </div>
                             </div>
                         `;
@@ -1290,7 +1314,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'jiguchon_permanent_master_v7');
+        const docRef = doc(db, 'retreatData', 'jiguchon_absolute_final_master');
 
         const initAuth = async () => {
             try {
@@ -1320,7 +1344,7 @@
                         });
                     }
                 }
-                localStorage.setItem('retreatAppData_permanent_v7', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v11', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1341,7 +1365,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_permanent_v7', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v11', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1362,7 +1386,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_permanent_v7', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v11', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1383,7 +1407,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_permanent_v7', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_absolute_master_v11', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
