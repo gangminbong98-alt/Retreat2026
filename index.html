@@ -415,7 +415,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_permanent_v3');
+                const saved = localStorage.getItem('retreatAppData_permanent_v4');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -1210,7 +1210,7 @@
         });
     </script>
 
-    <!-- Firebase Realtime Synchronization Module -->
+    <!-- Firebase Realtime Synchronization Module (체크 상태 독립 유지 및 영구 보존) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -1231,7 +1231,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'jiguchon_permanent_master_v3');
+        const docRef = doc(db, 'retreatData', 'jiguchon_permanent_master_v4');
 
         const initAuth = async () => {
             try {
@@ -1251,17 +1251,18 @@
                     if (serverData.posts && serverData.posts.length > 0) {
                         appData.posts = serverData.posts;
                     }
+                    // 서버의 명단 체크 상태를 덮어씌워지지 않게 이름 기준으로 병합 유지
                     if (serverData.members && serverData.members.length > 0) {
-                        appData.members = defaultAppData.members.map(defaultM => {
-                            const found = serverData.members.find(sM => sM.name === defaultM.name);
+                        appData.members = appData.members.map(localM => {
+                            const found = serverData.members.find(sM => sM.name === localM.name);
                             if (found) {
-                                return { ...defaultM, checked: found.checked, busChecked: found.busChecked };
+                                return { ...localM, checked: found.checked, busChecked: found.busChecked };
                             }
-                            return defaultM;
+                            return localM;
                         });
                     }
                 }
-                localStorage.setItem('retreatAppData_permanent_v3', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_permanent_v4', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1282,7 +1283,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_permanent_v3', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_permanent_v4', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1303,7 +1304,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_permanent_v3', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_permanent_v4', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1324,7 +1325,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_permanent_v3', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_permanent_v4', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
@@ -1356,13 +1357,14 @@
                         if (remoteData.posts && remoteData.posts.length > 0) {
                             appData.posts = remoteData.posts;
                         }
+                        // 원격 서버의 체크 상태를 현재 명단에 안전하게 반영 (리렌더링 시 체크 초기화 방지)
                         if (remoteData.members && remoteData.members.length > 0) {
-                            appData.members = defaultAppData.members.map(defaultM => {
-                                const found = remoteData.members.find(sM => sM.name === defaultM.name);
+                            appData.members = appData.members.map(localM => {
+                                const found = remoteData.members.find(sM => sM.name === localM.name);
                                 if (found) {
-                                    return { ...defaultM, checked: found.checked, busChecked: found.busChecked };
+                                    return { ...localM, checked: found.checked, busChecked: found.busChecked };
                                 }
-                                return defaultM;
+                                return localM;
                             });
                         }
                         appData.buses = remoteData.buses || appData.buses;
@@ -1375,7 +1377,9 @@
                                 if (document.getElementById('post-content-input')) document.getElementById('post-content-input').value = activeContent;
                             }
                         } else {
-                            navigateTo(currentView, true);
+                            // 현재 보고 있는 화면을 유지하면서 데이터만 부드럽게 갱신
+                            if (currentView === 'members') renderMembers();
+                            else if (currentView === 'bus') renderBus();
                         }
                     } catch (err) {
                         console.error("Firebase Sync Parse Error:", err);
