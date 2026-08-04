@@ -440,18 +440,21 @@
             ]
         };
 
-        // 로컬 스토리지에 저장된 체크 상태를 먼저 복원하는 안전한 로직
+        // 앱 실행 시 로컬 스토리지 데이터 불러오기
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_absolute_master_v20');
+                const saved = localStorage.getItem('retreatAppData_shared_v1');
                 if (saved) {
                     const parsed = JSON.parse(saved);
-                    // 기본 명단과 로컬에 저장된 체크 상태를 안전하게 결합
                     if (parsed.members) {
                         defaultAppData.members = defaultAppData.members.map(defaultM => {
                             const found = parsed.members.find(sM => sM.name === defaultM.name);
                             if (found) {
-                                return { ...defaultM, checked: !!found.checked, busChecked: !!found.busChecked };
+                                return { 
+                                    ...defaultM, 
+                                    checked: !!found.checked, 
+                                    busChecked: !!found.busChecked 
+                                };
                             }
                             return defaultM;
                         });
@@ -459,7 +462,6 @@
                     if (parsed.posts) {
                         defaultAppData.posts = parsed.posts;
                     }
-                    return defaultAppData;
                 }
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -984,7 +986,7 @@
 
         function selectScheduleDay(dayIdx) { currentScheduleDay = dayIdx; renderSchedule(); if (window.lucide) lucide.createIcons(); }
 
-        /* ---------------- LODGING VIEW (목자 이름을 각 방 맨 위로 올리고 굵은 글씨로 표시) ---------------- */
+        /* ---------------- LODGING VIEW ---------------- */
         function renderLodging() {
             const main = document.getElementById('main-content');
             main.innerHTML = `
@@ -993,7 +995,6 @@
                     ${appData.rooms.map(room => {
                         let membersInRoom = appData.members.filter(m => m.room === room.id);
                         
-                        // 목자 및 봉사자를 방 맨 위로 정렬
                         membersInRoom.sort((a, b) => {
                             if (a.role !== '학생' && b.role === '학생') return -1;
                             if (a.role === '학생' && b.role !== '학생') return 1;
@@ -1308,7 +1309,7 @@
         });
     </script>
 
-    <!-- Firebase Realtime Synchronization Module (체크 상태 영구 보호) -->
+    <!-- Firebase Realtime Synchronization Module (모든 기기 간 체크 상태 완벽 동기화 및 유지) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -1343,14 +1344,7 @@
 
         window.saveDataAtomic = async function() {
             try {
-                const snap = await getDoc(docRef);
-                if (snap.exists() && snap.data().payload) {
-                    const serverData = JSON.parse(snap.data().payload);
-                    if (serverData.posts && serverData.posts.length > 0) {
-                        appData.posts = serverData.posts;
-                    }
-                }
-                localStorage.setItem('retreatAppData_absolute_master_v21', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_shared_v1', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1371,7 +1365,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_absolute_master_v21', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_shared_v1', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1392,7 +1386,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_absolute_master_v21', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_shared_v1', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1413,7 +1407,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_absolute_master_v21', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_shared_v1', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
@@ -1426,6 +1420,7 @@
             }
         };
 
+        // 실시간 동기화로 다른 선생님의 체크 내용과 게시글이 즉시 반영되도록 설정
         onSnapshot(docRef, (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.data();
@@ -1445,9 +1440,28 @@
                         if (remoteData.posts && remoteData.posts.length > 0) {
                             appData.posts = remoteData.posts;
                         }
-                        
-                        // 명단 체크 상태는 로컬(내 스마트폰)의 선택이 서버 동기화 때문에 풀리지 않도록 게시판 글 외에는 덮어쓰지 않고 로컬 상태를 최우선으로 보호합니다.
-                        if (currentView === 'board') {
+
+                        // 다른 기기(선생님)에서 체크한 내용을 실시간으로 병합 반영
+                        if (remoteData.members && remoteData.members.length > 0) {
+                            appData.members = appData.members.map(localM => {
+                                const found = remoteData.members.find(sM => sM.name === localM.name);
+                                if (found) {
+                                    return { 
+                                        ...localM, 
+                                        checked: localM.checked || found.checked, 
+                                        busChecked: localM.busChecked || found.busChecked 
+                                    };
+                                }
+                                return localM;
+                            });
+                        }
+
+                        // 현재 보고 있는 화면이 명단이나 버스인 경우, 새로고침 없이 화면의 체크 표시만 실시간 갱신
+                        if (currentView === 'members') {
+                            renderMembers();
+                        } else if (currentView === 'bus') {
+                            renderBus();
+                        } else if (currentView === 'board') {
                             renderBoard();
                             if (isTyping) {
                                 if (document.getElementById('post-author-input')) document.getElementById('post-author-input').value = activeAuthor;
