@@ -377,8 +377,7 @@
             buses: [
                 { id: "5호차", driver: "기사님 (연락처 입력)", leader: "5호차 담당 교사", number: "5호차" },
                 { id: "6호차", driver: "기사님 (연락처 입력)", leader: "6호차 담당 교사", number: "6호차" },
-                { id: "후발대", driver: "기사님 (연락처 입력)", leader: "후발대 담당 교사", number: "후발대 차량" },
-                { id: "자차", driver: "개인 차량", leader: "자차 이동", number: "자차" }
+                { id: "후발대", driver: "기사님 (연락처 입력)", leader: "후발대 담당 교사", number: "후발대 차량" }
             ],
             schedule: [
                 {
@@ -443,7 +442,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_absolute_master_v10');
+                const saved = localStorage.getItem('retreatAppData_absolute_master_v12');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -770,7 +769,6 @@
             const b1 = appData.members.filter(m => m.bus === '5호차');
             const b2 = appData.members.filter(m => m.bus === '6호차');
             const b3 = appData.members.filter(m => m.bus === '후발대');
-            const b4 = appData.members.filter(m => m.bus === '자차');
 
             let filteredList = currentBusTab === '전체' ? appData.members : appData.members.filter(m => m.bus === currentBusTab);
             
@@ -808,6 +806,7 @@
                     ${busSearchKeyword ? `<button onclick="onSearchBus('')" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>` : ''}
                 </div>
 
+                <!-- 자차 버튼 삭제 후 3개 호차 + 전체 버튼 균등 배치 -->
                 <div class="grid grid-cols-4 gap-1 mb-2.5">
                     <button onclick="selectBusTab('5호차')" class="py-2 px-0.5 text-xs sm:text-sm font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '5호차' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
                         5호차 (${b1.length})
@@ -968,17 +967,16 @@
 
         function selectScheduleDay(dayIdx) { currentScheduleDay = dayIdx; renderSchedule(); if (window.lucide) lucide.createIcons(); }
 
-        /* ---------------- LODGING VIEW (각 방 맨앞에 목자 이름 굵게 표시) ---------------- */
+        /* ---------------- LODGING VIEW (목자 이름을 각 방 맨 위로 올리고 굵은 글씨로 표시) ---------------- */
         function renderLodging() {
             const main = document.getElementById('main-content');
             main.innerHTML = `
                 <h3 class="text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-3 px-1">방 배정 및 숙소 안내</h3>
                 <div class="space-y-3">
                     ${appData.rooms.map(room => {
-                        // 해당 방에 배정된 멤버들 필터링
                         let membersInRoom = appData.members.filter(m => m.room === room.id);
                         
-                        // 목자/봉사자를 맨 앞으로 정렬하고 학생들을 뒤로 정렬
+                        // 목자 및 봉사자를 방 맨 위로 정렬
                         membersInRoom.sort((a, b) => {
                             if (a.role !== '학생' && b.role === '학생') return -1;
                             if (a.role === '학생' && b.role !== '학생') return 1;
@@ -994,8 +992,8 @@
                                 <div class="grid grid-cols-2 gap-1.5">
                                     ${membersInRoom.map(m => {
                                         const isLeader = m.role === '목자' || m.role === '봉사자';
-                                        return `<div class="bg-slate-50 p-2 rounded-xl text-xs sm:text-sm ${isLeader ? 'font-black text-indigo-700 bg-indigo-50/60 border border-indigo-100' : 'font-extrabold text-slate-900 border border-slate-200'} flex justify-between items-center">
-                                            <span>${isLeader ? '<strong>' + m.name + ' (' + m.role + ')</strong>' : m.name}</span>
+                                        return `<div class="bg-slate-50 p-2 rounded-xl text-xs sm:text-sm ${isLeader ? 'font-black text-indigo-700 bg-indigo-50/60 border border-indigo-100 col-span-2' : 'font-extrabold text-slate-900 border border-slate-200'} flex justify-between items-center">
+                                            <span>${isLeader ? '<strong>⭐ ' + m.name + ' (' + m.role + ')</strong>' : m.name}</span>
                                             <span class="text-blue-600 text-xs font-bold">(${m.group || m.grade})</span>
                                         </div>`;
                                     }).join('')}
@@ -1344,7 +1342,7 @@
                         });
                     }
                 }
-                localStorage.setItem('retreatAppData_absolute_master_v11', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v13', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1365,7 +1363,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_absolute_master_v11', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v13', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1386,7 +1384,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_absolute_master_v11', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v13', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1407,7 +1405,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_absolute_master_v11', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_absolute_master_v13', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
