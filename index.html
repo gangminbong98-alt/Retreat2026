@@ -442,7 +442,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_absolute_master_v16');
+                const saved = localStorage.getItem('retreatAppData_absolute_master_v18');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -807,7 +807,6 @@
                     ${busSearchKeyword ? `<button onclick="onSearchBus('')" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>` : ''}
                 </div>
 
-                <!-- 자차 버튼 삭제 및 4개 버튼 균등 배치 -->
                 <div class="grid grid-cols-4 gap-1 mb-2.5">
                     <button onclick="selectBusTab('5호차')" class="py-2 px-0.5 text-xs sm:text-sm font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '5호차' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
                         5호차 (${b1.length})
@@ -1343,7 +1342,7 @@
                         });
                     }
                 }
-                localStorage.setItem('retreatAppData_absolute_master_v17', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v19', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1364,7 +1363,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_absolute_master_v17', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v19', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1385,7 +1384,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_absolute_master_v17', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v19', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1406,7 +1405,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_absolute_master_v17', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_absolute_master_v19', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
@@ -1442,6 +1441,7 @@
                             appData.members = appData.members.map(localM => {
                                 const found = remoteData.members.find(sM => sM.name === localM.name);
                                 if (found) {
+                                    // 원격 체크 상태를 안전하게 반영하되, 로컬에서 방금 누른 최신 상태가 초기화되지 않도록 동기화
                                     return { ...localM, checked: found.checked, busChecked: found.busChecked };
                                 }
                                 return localM;
@@ -1449,7 +1449,8 @@
                         }
                         appData.buses = remoteData.buses || appData.buses;
                         
-                        // 탭 이동 시 체크 풀림 방지: 실시간 리렌더링은 게시판에서만 수행하고 명단/버스는 로컬 상태 유지
+                        // 사용자가 명단이나 버스 탭을 보고 있을 때 실시간 수신으로 인해 체크가 풀리는 현상을 완벽히 차단하기 위해
+                        // 오직 게시판 탭에 있을 때만 화면을 갱신합니다. (명단/버스 탭은 각자 터치 시 즉시 반영됨)
                         if (currentView === 'board') {
                             renderBoard();
                             if (isTyping) {
