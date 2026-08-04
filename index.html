@@ -425,7 +425,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v22');
+                const saved = localStorage.getItem('retreatAppData_v23');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -636,7 +636,25 @@
             `;
         }
 
-        /* ---------------- MEMBERS VIEW (학년별 배경색 구분) ---------------- */
+        /* 공통 학년별 색상 판별 함수 (1학년: 은은한 노랑, 2학년: 초록, 3학년: 보라, 교사: 흰색) */
+        function getGradeBgClass(m) {
+            if (m.checked) {
+                return 'bg-gradient-to-b from-emerald-50 to-emerald-100/70 border-emerald-400 border-b-3 border-b-emerald-600 text-emerald-950';
+            }
+            if (m.role === '교사') {
+                return 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-800 hover:bg-slate-50';
+            }
+            if (m.grade && m.grade.startsWith('1')) {
+                return 'bg-yellow-50/90 border-yellow-200 border-b-3 border-b-yellow-300 text-slate-800 hover:bg-yellow-100/60';
+            } else if (m.grade && m.grade.startsWith('2')) {
+                return 'bg-emerald-50/80 border-emerald-200 border-b-3 border-b-emerald-300 text-slate-800 hover:bg-emerald-100/50';
+            } else if (m.grade && m.grade.startsWith('3')) {
+                return 'bg-purple-50/80 border-purple-200 border-b-3 border-b-purple-300 text-slate-800 hover:bg-purple-100/50';
+            }
+            return 'bg-gradient-to-b from-white to-slate-50 border-slate-200 border-b-3 border-b-slate-300 text-slate-800 hover:bg-slate-50';
+        }
+
+        /* ---------------- MEMBERS VIEW ---------------- */
         function renderMembers() {
             const main = document.getElementById('main-content');
             const filteredMembers = appData.members.filter(m => 
@@ -665,42 +683,25 @@
                 </div>
 
                 <div class="space-y-1.5 pr-0.5">
-                    ${filteredMembers.map(m => {
-                        let gradeBgClass = '';
-                        if (m.checked) {
-                            gradeBgClass = 'bg-gradient-to-b from-emerald-50 to-emerald-100/70 border-emerald-400 border-b-3 border-b-emerald-600 text-emerald-950';
-                        } else {
-                            if (m.grade && m.grade.startsWith('1')) {
-                                gradeBgClass = 'bg-sky-50/80 border-sky-200 border-b-3 border-b-sky-300 text-slate-800 hover:bg-sky-100/50';
-                            } else if (m.grade && m.grade.startsWith('2')) {
-                                gradeBgClass = 'bg-emerald-50/80 border-emerald-200 border-b-3 border-b-emerald-300 text-slate-800 hover:bg-emerald-100/50';
-                            } else if (m.grade && m.grade.startsWith('3')) {
-                                gradeBgClass = 'bg-purple-50/80 border-purple-200 border-b-3 border-b-purple-300 text-slate-800 hover:bg-purple-100/50';
-                            } else {
-                                gradeBgClass = 'bg-gradient-to-b from-white to-slate-50 border-slate-200 border-b-3 border-b-slate-300 text-slate-800 hover:bg-slate-50';
-                            }
-                        }
-
-                        return `
-                            <div onclick="toggleMemberCheck(${m.id})" 
-                                class="px-3 py-2.5 rounded-xl border-t border-x flex items-center justify-between cursor-pointer active:translate-y-0.5 transition-all shadow-2xs ${gradeBgClass}">
-                                
-                                <div class="flex items-center space-x-2.5 min-w-0 flex-1">
-                                    <div class="w-7 h-7 rounded-lg font-black text-xs sm:text-sm flex items-center justify-center shrink-0 transition-colors ${m.checked ? 'bg-emerald-500 text-white shadow-xs' : 'bg-slate-100 text-slate-400 border border-slate-200'}">
-                                        ${m.checked ? '✓' : 'ㅡ'}
-                                    </div>
-                                    <span class="px-2 py-0.5 rounded text-xs font-extrabold shrink-0 ${m.role === '교사' ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-white/80 text-slate-700 border border-slate-200'}">${m.group || m.grade}</span>
-                                    <span class="font-black text-base sm:text-lg tracking-tight truncate ${m.checked ? 'text-emerald-950' : 'text-slate-900'}">${m.name}</span>
-                                    <span class="text-xs ${m.checked ? 'text-emerald-700' : 'text-slate-400'} font-bold shrink-0">(${m.role})</span>
+                    ${filteredMembers.map(m => `
+                        <div onclick="toggleMemberCheck(${m.id})" 
+                            class="px-3 py-2.5 rounded-xl border-t border-x flex items-center justify-between cursor-pointer active:translate-y-0.5 transition-all shadow-2xs ${getGradeBgClass(m)}">
+                            
+                            <div class="flex items-center space-x-2.5 min-w-0 flex-1">
+                                <div class="w-7 h-7 rounded-lg font-black text-xs sm:text-sm flex items-center justify-center shrink-0 transition-colors ${m.checked ? 'bg-emerald-500 text-white shadow-xs' : 'bg-slate-100 text-slate-400 border border-slate-200'}">
+                                    ${m.checked ? '✓' : 'ㅡ'}
                                 </div>
-                                
-                                <div class="flex items-center space-x-1 shrink-0 ml-2">
-                                    <span class="${m.checked ? 'bg-emerald-200/80 text-emerald-950 border-emerald-300' : 'bg-white/90 text-blue-700 border-blue-200'} border px-2 py-0.5 rounded-lg text-xs font-extrabold whitespace-nowrap">${m.bus}</span>
-                                    <span class="${m.checked ? 'bg-emerald-200/50 text-emerald-950 border-emerald-300' : 'bg-white/90 text-slate-700 border-slate-200'} border px-2 py-0.5 rounded-lg text-xs font-bold whitespace-nowrap">${m.room}</span>
-                                </div>
+                                <span class="px-2 py-0.5 rounded text-xs font-extrabold shrink-0 ${m.role === '교사' ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-white/80 text-slate-700 border border-slate-200'}">${m.group || m.grade}</span>
+                                <span class="font-black text-base sm:text-lg tracking-tight truncate ${m.checked ? 'text-emerald-950' : 'text-slate-900'}">${m.name}</span>
+                                <span class="text-xs ${m.checked ? 'text-emerald-700' : 'text-slate-400'} font-bold shrink-0">(${m.role})</span>
                             </div>
-                        `;
-                    }).join('')}
+                            
+                            <div class="flex items-center space-x-1 shrink-0 ml-2">
+                                <span class="${m.checked ? 'bg-emerald-200/80 text-emerald-950 border-emerald-300' : 'bg-white/90 text-blue-700 border-blue-200'} border px-2 py-0.5 rounded-lg text-xs font-extrabold whitespace-nowrap">${m.bus}</span>
+                                <span class="${m.checked ? 'bg-emerald-200/50 text-emerald-950 border-emerald-300' : 'bg-white/90 text-slate-700 border-slate-200'} border px-2 py-0.5 rounded-lg text-xs font-bold whitespace-nowrap">${m.room}</span>
+                            </div>
+                        </div>
+                    `).join('')}
                     ${filteredMembers.length === 0 ? `<div class="py-10 text-center text-xs text-slate-400">검색 결과가 없습니다.</div>` : ''}
                 </div>
             `;
@@ -725,7 +726,7 @@
             }
         }
 
-        /* ---------------- BUS VIEW (호차별 배경색 구분) ---------------- */
+        /* ---------------- BUS VIEW (명단과 동일한 학년별 색상 적용) ---------------- */
         function renderBus() {
             const main = document.getElementById('main-content');
             
@@ -794,35 +795,18 @@
                 </div>
 
                 <div class="grid grid-cols-3 gap-1.5 mb-3">
-                    ${filteredList.map((m, idx) => {
-                        let busCardBg = '';
-                        if (m.busChecked) {
-                            busCardBg = 'bg-gradient-to-b from-emerald-50 to-emerald-100/70 border-emerald-400 border-b-3 border-b-emerald-600 text-emerald-950';
-                        } else {
-                            if (m.bus === '1호차') {
-                                busCardBg = 'bg-sky-50/80 border-sky-200 border-b-3 border-b-sky-300 text-slate-800 hover:bg-sky-100/50';
-                            } else if (m.bus === '2호차') {
-                                busCardBg = 'bg-emerald-50/80 border-emerald-200 border-b-3 border-b-emerald-300 text-slate-800 hover:bg-emerald-100/50';
-                            } else if (m.bus === '후발대') {
-                                busCardBg = 'bg-amber-50/80 border-amber-200 border-b-3 border-b-amber-300 text-slate-800 hover:bg-amber-100/50';
-                            } else {
-                                busCardBg = 'bg-gradient-to-b from-white to-slate-50 border-slate-200 border-b-3 border-b-slate-300 text-slate-800 hover:bg-slate-50';
-                            }
-                        }
-
-                        return `
-                            <div onclick="toggleBusCheck(${m.id})" 
-                                class="px-2.5 py-3 rounded-xl border-t border-x flex items-center justify-between transition cursor-pointer active:translate-y-0.5 shadow-2xs min-w-0 ${busCardBg}">
-                                <div class="flex items-center space-x-1 min-w-0 flex-1 overflow-hidden">
-                                    <span class="text-xs text-slate-400 shrink-0 font-medium mr-0.5">${idx + 1}</span>
-                                    <span class="text-base sm:text-lg font-black tracking-tight whitespace-nowrap leading-none truncate">${m.name}</span>
-                                </div>
-                                <div class="w-5 h-5 rounded flex items-center justify-center text-xs shrink-0 font-black ml-1 ${m.busChecked ? 'bg-emerald-500 text-white shadow-xs' : 'border border-slate-300 bg-white/80'}">
-                                    ${m.busChecked ? '✓' : ''}
-                                </div>
+                    ${filteredList.map((m, idx) => `
+                        <div onclick="toggleBusCheck(${m.id})" 
+                            class="px-2.5 py-3 rounded-xl border-t border-x flex items-center justify-between transition cursor-pointer active:translate-y-0.5 shadow-2xs min-w-0 ${getGradeBgClass(m)}">
+                            <div class="flex items-center space-x-1 min-w-0 flex-1 overflow-hidden">
+                                <span class="text-xs text-slate-400 shrink-0 font-medium mr-0.5">${idx + 1}</span>
+                                <span class="text-base sm:text-lg font-black tracking-tight whitespace-nowrap leading-none truncate">${m.name}</span>
                             </div>
-                        `;
-                    }).join('')}
+                            <div class="w-5 h-5 rounded flex items-center justify-center text-xs shrink-0 font-black ml-1 ${m.busChecked ? 'bg-emerald-500 text-white shadow-xs' : 'border border-slate-300 bg-white/80'}">
+                                ${m.busChecked ? '✓' : ''}
+                            </div>
+                        </div>
+                    `).join('')}
                     ${filteredList.length === 0 ? `<div class="col-span-3 py-10 text-center text-xs text-slate-400">해당하는 참석자가 없습니다.</div>` : ''}
                 </div>
 
@@ -1264,7 +1248,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'main_v22');
+        const docRef = doc(db, 'retreatData', 'main_v23');
 
         const initAuth = async () => {
             try {
@@ -1283,7 +1267,7 @@
                     const serverData = JSON.parse(snap.data().payload);
                     appData.posts = serverData.posts || appData.posts;
                 }
-                localStorage.setItem('retreatAppData_v22', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v23', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1304,7 +1288,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_v22', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v23', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1325,7 +1309,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_v22', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v23', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1346,7 +1330,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_v22', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_v23', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
