@@ -442,7 +442,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_absolute_master_v12');
+                const saved = localStorage.getItem('retreatAppData_absolute_master_v16');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -653,6 +653,7 @@
             `;
         }
 
+        /* 후발대 친구들(김태빈, 최승현, 이하빈, 김선율)은 회색 바탕색 적용 */
         function getCardBgClass(m) {
             const isLate = ["김태빈", "최승현", "이하빈", "김선율"].includes(m.name);
             if (m.checked) {
@@ -806,7 +807,7 @@
                     ${busSearchKeyword ? `<button onclick="onSearchBus('')" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>` : ''}
                 </div>
 
-                <!-- 자차 버튼 삭제 후 3개 호차 + 전체 버튼 균등 배치 -->
+                <!-- 자차 버튼 삭제 및 4개 버튼 균등 배치 -->
                 <div class="grid grid-cols-4 gap-1 mb-2.5">
                     <button onclick="selectBusTab('5호차')" class="py-2 px-0.5 text-xs sm:text-sm font-extrabold rounded-xl border-t border-x transition active:translate-y-0.5 ${currentBusTab === '5호차' ? 'bg-indigo-900 border-indigo-950 border-b-3 border-b-indigo-950 text-white shadow-md' : 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-600 hover:bg-slate-50'}">
                         5호차 (${b1.length})
@@ -1342,7 +1343,7 @@
                         });
                     }
                 }
-                localStorage.setItem('retreatAppData_absolute_master_v13', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v17', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1363,7 +1364,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_absolute_master_v13', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v17', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1384,7 +1385,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_absolute_master_v13', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v17', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1405,7 +1406,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_absolute_master_v13', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_absolute_master_v17', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
@@ -1448,6 +1449,7 @@
                         }
                         appData.buses = remoteData.buses || appData.buses;
                         
+                        // 탭 이동 시 체크 풀림 방지: 실시간 리렌더링은 게시판에서만 수행하고 명단/버스는 로컬 상태 유지
                         if (currentView === 'board') {
                             renderBoard();
                             if (isTyping) {
