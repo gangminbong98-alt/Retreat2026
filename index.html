@@ -406,7 +406,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v28');
+                const saved = localStorage.getItem('retreatAppData_permanent_v1');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -1024,7 +1024,7 @@
                 document.getElementById('admin-panel-modal').classList.remove('hidden');
                 switchAdminTab('members');
             } else {
-                document.getElementById('pass-error-msg').classList.remove('hidden');
+                document.getElementById('pass-error-msg').classList.add('hidden');
             }
         }
         function closeAdminPanel() { document.getElementById('admin-panel-modal').classList.add('hidden'); navigateTo(currentView); }
@@ -1198,7 +1198,7 @@
         });
     </script>
 
-    <!-- Firebase Realtime Synchronization Module (서버 글 데이터 영구 보존 로직) -->
+    <!-- Firebase Realtime Synchronization Module (단 하나의 고정된 영구 문서 ID 사용) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -1219,7 +1219,8 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'main_v29');
+        // [핵심] 절대 버전이 바뀌지 않는 단 하나의 고정 문서 ID 사용
+        const docRef = doc(db, 'retreatData', 'jiguchon_permanent_master_v1');
 
         const initAuth = async () => {
             try {
@@ -1240,7 +1241,7 @@
                         appData.posts = serverData.posts;
                     }
                 }
-                localStorage.setItem('retreatAppData_v29', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_permanent_v1', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1261,7 +1262,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_v29', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_permanent_v1', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1282,7 +1283,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_v29', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_permanent_v1', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1303,7 +1304,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_v29', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_permanent_v1', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
