@@ -197,7 +197,7 @@
                     <div class="grid grid-cols-3 gap-2">
                         <div>
                             <label class="block text-slate-500 mb-1">조</label>
-                            <input type="text" id="m-form-group" placeholder="1-1" class="w-full border rounded-lg px-2.5 py-1.5">
+                            <input type="text" id="m-form-group" placeholder="1-1" class="w-full border rounded-lg px-2 py-1.5">
                         </div>
                         <div>
                             <label class="block text-slate-500 mb-1">버스</label>
@@ -210,7 +210,7 @@
                         </div>
                         <div>
                             <label class="block text-slate-500 mb-1">숙소</label>
-                            <input type="text" id="m-form-room" placeholder="201호" class="w-full border rounded-lg px-2.5 py-1.5">
+                            <input type="text" id="m-form-room" placeholder="201호" class="w-full border rounded-lg px-2 py-1.5">
                         </div>
                     </div>
                 </div>
@@ -274,26 +274,7 @@
                 "5. 수련회 이후에도 지속적인 예배 참석과 경건의 훈련이 이루어지는 수련회가 되도록",
                 "6. 감사의 고백이 끊이지 않고, 아름다운 믿음의 동역을 경험하는 수련회가 되도록"
             ],
-            posts: [
-                {
-                    id: 1,
-                    author: "12시중등",
-                    content: "수련회 너무 기대됩니다! 모두 기도로 기쁘게 준비해요 🙏",
-                    date: "2026.08.01 14:20",
-                    pass: "1234",
-                    prays: 5,
-                    blessings: 8
-                },
-                {
-                    id: 2,
-                    author: "중1 은혜",
-                    content: "첫 수련회라 설레네요~ 준비물 잘 챙겨갈게요!",
-                    date: "2026.08.01 16:05",
-                    pass: "1234",
-                    prays: 3,
-                    blessings: 4
-                }
-            ],
+            posts: [], // 초기 코드가 서버의 실시간 글을 지우지 않도록 빈 배열로 설정
             members: [
                 { id: 1, name: "박민서", role: "학생", grade: "1-1", group: "1-1", bus: "1호차", room: "201호", checked: false, busChecked: false },
                 { id: 2, name: "이시원", role: "학생", grade: "1-1", group: "1-1", bus: "1호차", room: "201호", checked: false, busChecked: false },
@@ -425,7 +406,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v26');
+                const saved = localStorage.getItem('retreatAppData_v27');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -931,7 +912,7 @@
             `;
         }
 
-        /* ---------------- BOARD VIEW (파이어베이스 글 데이터 완벽 보존 처리) ---------------- */
+        /* ---------------- BOARD VIEW ---------------- */
         function renderBoard() {
             const main = document.getElementById('main-content');
             const posts = appData.posts || [];
@@ -1217,7 +1198,7 @@
         });
     </script>
 
-    <!-- Firebase Realtime Synchronization Module (서버 글 데이터 병합 보존 로직 적용) -->
+    <!-- Firebase Realtime Synchronization Module (서버 글 데이터 영구 보존 및 실시간 동기화) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -1238,7 +1219,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'main_v26');
+        const docRef = doc(db, 'retreatData', 'main_v27');
 
         const initAuth = async () => {
             try {
@@ -1255,12 +1236,11 @@
                 const snap = await getDoc(docRef);
                 if (snap.exists() && snap.data().payload) {
                     const serverData = JSON.parse(snap.data().payload);
-                    // 서버에 이미 작성된 게시글이 있다면 최우선으로 보존 병합
                     if (serverData.posts && serverData.posts.length > 0) {
                         appData.posts = serverData.posts;
                     }
                 }
-                localStorage.setItem('retreatAppData_v26', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v27', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1281,7 +1261,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_v26', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v27', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1302,7 +1282,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_v26', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v27', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1323,7 +1303,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_v26', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_v27', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
@@ -1352,7 +1332,6 @@
                             document.activeElement.id === 'post-content-input'
                         );
 
-                        // 서버의 최신 글 목록이 비어있지 않다면 유지
                         if (remoteData.posts && remoteData.posts.length > 0) {
                             appData.posts = remoteData.posts;
                         }
