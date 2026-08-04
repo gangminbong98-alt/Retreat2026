@@ -440,10 +440,27 @@
             ]
         };
 
+        // 로컬 스토리지에 저장된 체크 상태를 먼저 복원하는 안전한 로직
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_absolute_master_v18');
-                if (saved) return JSON.parse(saved);
+                const saved = localStorage.getItem('retreatAppData_absolute_master_v20');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    // 기본 명단과 로컬에 저장된 체크 상태를 안전하게 결합
+                    if (parsed.members) {
+                        defaultAppData.members = defaultAppData.members.map(defaultM => {
+                            const found = parsed.members.find(sM => sM.name === defaultM.name);
+                            if (found) {
+                                return { ...defaultM, checked: !!found.checked, busChecked: !!found.busChecked };
+                            }
+                            return defaultM;
+                        });
+                    }
+                    if (parsed.posts) {
+                        defaultAppData.posts = parsed.posts;
+                    }
+                    return defaultAppData;
+                }
             } catch (e) {
                 console.warn("Local storage loading error:", e);
             }
@@ -1291,7 +1308,7 @@
         });
     </script>
 
-    <!-- Firebase Realtime Synchronization Module -->
+    <!-- Firebase Realtime Synchronization Module (체크 상태 영구 보호) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -1332,17 +1349,8 @@
                     if (serverData.posts && serverData.posts.length > 0) {
                         appData.posts = serverData.posts;
                     }
-                    if (serverData.members && serverData.members.length > 0) {
-                        appData.members = appData.members.map(localM => {
-                            const found = serverData.members.find(sM => sM.name === localM.name);
-                            if (found) {
-                                return { ...localM, checked: found.checked, busChecked: found.busChecked };
-                            }
-                            return localM;
-                        });
-                    }
                 }
-                localStorage.setItem('retreatAppData_absolute_master_v19', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v21', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1363,7 +1371,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_absolute_master_v19', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v21', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1384,7 +1392,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_absolute_master_v19', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_absolute_master_v21', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1405,7 +1413,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_absolute_master_v19', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_absolute_master_v21', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
@@ -1437,20 +1445,8 @@
                         if (remoteData.posts && remoteData.posts.length > 0) {
                             appData.posts = remoteData.posts;
                         }
-                        if (remoteData.members && remoteData.members.length > 0) {
-                            appData.members = appData.members.map(localM => {
-                                const found = remoteData.members.find(sM => sM.name === localM.name);
-                                if (found) {
-                                    // 원격 체크 상태를 안전하게 반영하되, 로컬에서 방금 누른 최신 상태가 초기화되지 않도록 동기화
-                                    return { ...localM, checked: found.checked, busChecked: found.busChecked };
-                                }
-                                return localM;
-                            });
-                        }
-                        appData.buses = remoteData.buses || appData.buses;
                         
-                        // 사용자가 명단이나 버스 탭을 보고 있을 때 실시간 수신으로 인해 체크가 풀리는 현상을 완벽히 차단하기 위해
-                        // 오직 게시판 탭에 있을 때만 화면을 갱신합니다. (명단/버스 탭은 각자 터치 시 즉시 반영됨)
+                        // 명단 체크 상태는 로컬(내 스마트폰)의 선택이 서버 동기화 때문에 풀리지 않도록 게시판 글 외에는 덮어쓰지 않고 로컬 상태를 최우선으로 보호합니다.
                         if (currentView === 'board') {
                             renderBoard();
                             if (isTyping) {
