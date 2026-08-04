@@ -425,7 +425,7 @@
 
         function loadLocalData() {
             try {
-                const saved = localStorage.getItem('retreatAppData_v23');
+                const saved = localStorage.getItem('retreatAppData_v24');
                 if (saved) return JSON.parse(saved);
             } catch (e) {
                 console.warn("Local storage loading error:", e);
@@ -636,7 +636,7 @@
             `;
         }
 
-        /* 공통 학년별 색상 판별 함수 (1학년: 은은한 노랑, 2학년: 초록, 3학년: 보라, 교사: 흰색) */
+        /* 학년별 배경색 판별 함수 (1학년: 은은한 노랑, 2학년: 초록, 3학년: 보라, 교사: 흰색) */
         function getGradeBgClass(m) {
             if (m.checked) {
                 return 'bg-gradient-to-b from-emerald-50 to-emerald-100/70 border-emerald-400 border-b-3 border-b-emerald-600 text-emerald-950';
@@ -645,7 +645,7 @@
                 return 'bg-white border-slate-200 border-b-3 border-b-slate-300 text-slate-800 hover:bg-slate-50';
             }
             if (m.grade && m.grade.startsWith('1')) {
-                return 'bg-yellow-50/90 border-yellow-200 border-b-3 border-b-yellow-300 text-slate-800 hover:bg-yellow-100/60';
+                return 'bg-amber-50/70 border-amber-200 border-b-3 border-b-amber-300 text-slate-800 hover:bg-amber-100/50';
             } else if (m.grade && m.grade.startsWith('2')) {
                 return 'bg-emerald-50/80 border-emerald-200 border-b-3 border-b-emerald-300 text-slate-800 hover:bg-emerald-100/50';
             } else if (m.grade && m.grade.startsWith('3')) {
@@ -679,15 +679,15 @@
 
                 <div class="flex justify-between items-center mb-2 px-1">
                     <span class="text-xs sm:text-sm text-slate-600 font-bold">참석자 (<span class="text-blue-600 font-black">${filteredMembers.length}</span>명)</span>
-                    <span class="text-[11px] text-slate-400">이름을 누르면 체크됩니다</span>
+                    <span class="text-[11px] text-slate-400">체크박스를 누르면 체크됩니다</span>
                 </div>
 
                 <div class="space-y-1.5 pr-0.5">
                     ${filteredMembers.map(m => `
-                        <div onclick="toggleMemberCheck(${m.id})" 
-                            class="px-3 py-2.5 rounded-xl border-t border-x flex items-center justify-between cursor-pointer active:translate-y-0.5 transition-all shadow-2xs ${getGradeBgClass(m)}">
+                        <div class="px-3 py-2.5 rounded-xl border-t border-x flex items-center justify-between transition-all shadow-2xs ${getGradeBgClass(m)}">
                             
-                            <div class="flex items-center space-x-2.5 min-w-0 flex-1">
+                            <!-- 왼쪽 영역: 체크박스만 누르면 체크됨 -->
+                            <div class="flex items-center space-x-2.5 min-w-0 flex-1 cursor-pointer" onclick="toggleMemberCheck(${m.id})">
                                 <div class="w-7 h-7 rounded-lg font-black text-xs sm:text-sm flex items-center justify-center shrink-0 transition-colors ${m.checked ? 'bg-emerald-500 text-white shadow-xs' : 'bg-slate-100 text-slate-400 border border-slate-200'}">
                                     ${m.checked ? '✓' : 'ㅡ'}
                                 </div>
@@ -726,7 +726,7 @@
             }
         }
 
-        /* ---------------- BUS VIEW (명단과 동일한 학년별 색상 적용) ---------------- */
+        /* ---------------- BUS VIEW (버스 화면도 명단과 동일한 학년별 색상 적용) ---------------- */
         function renderBus() {
             const main = document.getElementById('main-content');
             
@@ -1248,7 +1248,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const docRef = doc(db, 'retreatData', 'main_v23');
+        const docRef = doc(db, 'retreatData', 'main_v24');
 
         const initAuth = async () => {
             try {
@@ -1267,7 +1267,7 @@
                     const serverData = JSON.parse(snap.data().payload);
                     appData.posts = serverData.posts || appData.posts;
                 }
-                localStorage.setItem('retreatAppData_v23', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v24', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
             } catch (e) {
                 console.error("Firebase Sync Save Error:", e);
@@ -1288,7 +1288,7 @@
                 latestPosts.unshift(newPost);
                 appData.posts = latestPosts;
 
-                localStorage.setItem('retreatAppData_v23', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v24', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 
                 if (currentView === 'board') renderBoard();
@@ -1309,7 +1309,7 @@
                     if (!post[type]) post[type] = 0;
                     post[type] += 1;
                 }
-                localStorage.setItem('retreatAppData_v23', JSON.stringify(appData));
+                localStorage.setItem('retreatAppData_v24', JSON.stringify(appData));
                 await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                 if (currentView === 'board') renderBoard();
                 if (window.lucide) lucide.createIcons();
@@ -1330,7 +1330,7 @@
 
                 if (inputPass === post.pass || inputPass === '1234') {
                     appData.posts.splice(postIndex, 1);
-                    localStorage.setItem('retreatAppData_v23', JSON.stringify(appData));
+                    localStorage.setItem('retreatAppData_v24', JSON.stringify(appData));
                     await setDoc(docRef, { payload: JSON.stringify(appData) }, { merge: true });
                     if (currentView === 'board') renderBoard();
                     if (window.lucide) lucide.createIcons();
